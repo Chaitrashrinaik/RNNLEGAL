@@ -1,0 +1,96 @@
+# ============================================================
+# CaseBench (Case Management System) - container compose
+#
+# Brings up:  MySQL 8 + the app (client+API) + optional one-off seed
+#
+# Override secrets via a `.env` file next to this compose file:
+#   MYSQL_ROOT_PASSWORD, MYSQL_PASSWORD, JWT_SECRET, CLIENT_URL, ...
+#
+# Usage:
+#   docker compose up -d --build            # start app + db
+#   docker compose --profile seed run --rm seed   # seed data ONCE
+# ============================================================
+
+services:
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-case_management}
+      MYSQL_USER: ${MYSQL_USER:-casebench}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-casebench_pass}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_pass}
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${MYSQL_ROOT_PASSWORD:-root_pass}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    # Optional: expose MySQL on the host for debugging
+    # ports:
+    #   - "3306:3306"
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-}   # empty = same-origin (recommended single-container)
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: ${MYSQL_USER:-casebench}
+      DB_PASSWORD: ${MYSQL_PASSWORD:-casebench_pass}
+      DB_NAME: ${MYSQL_DATABASE:-case_management}
+      JWT_SECRET: ${JWT_SECRET:-change-me-to-a-long-random-secret}
+      JWT_EXPIRE: ${JWT_EXPIRE:-7d}
+      CLIENT_URL: ${CLIENT_URL:-http://localhost:5000}
+      CLIENT_PORTAL_URL: ${CLIENT_PORTAL_URL:-http://localhost:5000/client-portal}
+      EMAIL_HOST: ${EMAIL_HOST:-}
+      EMAIL_PORT: ${EMAIL_PORT:-587}
+      EMAIL_USER: ${EMAIL_USER:-}
+      EMAIL_PASS: ${EMAIL_PASS:-}
+      CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME:-}
+      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY:-}
+      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET:-}
+      ECOURTS_API_KEY: ${ECOURTS_API_KEY:-}
+      ECOURTS_API_BASE_URL: ${ECOURTS_API_BASE_URL:-}
+    volumes:
+      - uploads_data:/app/server/uploads
+    ports:
+      - "${APP_PORT:-5000}:5000"
+
+  # One-off seed: docker compose --profile seed run --rm seed
+  seed:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-}
+    profiles: ["seed"]
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: ${MYSQL_USER:-casebench}
+      DB_PASSWORD: ${MYSQL_PASSWORD:-casebench_pass}
+      DB_NAME: ${MYSQL_DATABASE:-case_management}
+      JWT_SECRET: ${JWT_SECRET:-change-me-to-a-long-random-secret}
+    command: ["node", "src/seed.js"]
+
+volumes:
+  db_data:
+  uploads_data:

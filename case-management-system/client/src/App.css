@@ -1,0 +1,188 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #0f1520;
+  color: #e8e8e8;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 21, 32, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(138, 155, 180, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(138, 155, 180, 0.5);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(138, 155, 180, 0.3) rgba(15, 21, 32, 0.5);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.3s ease-out;
+}
+
+.animate-slide-in-up {
+  animation: slideInUp 0.3s ease-out;
+}
+
+.page-container {
+  padding: 24px;
+  height: 100%;
+  overflow-y: auto;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #e8e8e8;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, #1a2332 0%, #1e2d4a 100%);
+  border: 1px solid rgba(37, 51, 73, 0.5);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.2s ease;
+}
+
+.stat-card:hover {
+  border-color: rgba(201, 169, 110, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.gold-accent {
+  color: #c9a96e;
+}
+
+.gold-border {
+  border-color: rgba(201, 169, 110, 0.3) !important;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #1a2332 25%, #1e2d4a 50%, #1a2332 75%);
+  background-size: 200% 100%;
+  animation: pulse 1.5s infinite;
+  border-radius: 4px;
+}
+
+a {
+  color: #c9a96e;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #d4bc8e;
+}
+
+.MuiDataGrid-root .MuiDataGrid-row {
+  cursor: pointer;
+}
+
+.MuiTab-root.Mui-selected {
+  color: #c9a96e;
+}
+
+.MuiTabs-indicator {
+  background-color: #c9a96e;
+}
+
+.MuiCheckbox-root.Mui-checked {
+  color: #c9a96e;
+}
+
+.MuiSwitch-root.Mui-checked .MuiSwitch-switchBase.Mui-checked {
+  color: #c9a96e;
+}
+
+.MuiSwitch-root.Mui-checked .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track {
+  background-color: rgba(201, 169, 110, 0.5);
+}
+
+.MuiLinearProgress-root .MuiLinearProgress-bar {
+  background-color: #c9a96e;
+}
+
+.MuiCircularProgress-root {
+  color: #c9a96e;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:autofill,
+input:autofill:hover,
+input:autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #1a2332 inset;
+  -webkit-text-fill-color: #e8e8e8;
+  box-shadow: 0 0 0px 1000px #1a2332 inset;
+  color: #e8e8e8;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.tooltip-dark .MuiTooltip-tooltip {
+  background-color: #253349;
+  font-size: 0.75rem;
+}

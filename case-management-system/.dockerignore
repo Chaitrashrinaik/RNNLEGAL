@@ -1,0 +1,27 @@
+# Dependencies
+**/node_modules
+
+# Local builds
+client/dist
+
+# Secrets - never copy into the image
+**/.env
+**/.env.*
+!client/.env.example
+
+# Logs & data
+**/*.log
+**/logs
+server/data
+server/uploads/*
+
+# Git / editor
+.git
+.gitignore
+.idea
+.vscode
+*.md
+
+# OS files
+.DS_Store
+Thumbs.db
