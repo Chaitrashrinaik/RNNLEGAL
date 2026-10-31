@@ -34,10 +34,21 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+// Endpoints whose 401 means "bad credentials", not "expired session".
+// They must never trigger the refresh/redirect flow, otherwise a failed login
+// reloads the page and the error message is never shown.
+const AUTH_ENDPOINTS = ['/auth/login', '/auth/register', '/auth/refresh', '/auth/client-login', '/auth/forgot-password', '/auth/verify-otp', '/auth/reset-password'];
+
+const isAuthEndpoint = (url = '') => AUTH_ENDPOINTS.some((endpoint) => url.includes(endpoint));
+
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
+
+    if (isAuthEndpoint(originalRequest?.url)) {
+      return Promise.reject(error);
+    }
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {

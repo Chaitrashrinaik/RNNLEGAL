@@ -1,15 +1,23 @@
 ﻿import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Box, Typography, Card, CardContent, Button, List, ListItem, ListItemIcon,
-  ListItemText, Avatar, CircularProgress, Chip, IconButton, LinearProgress, Grid,
-} from '@mui/material';
-import {
-  Gavel as CasesIcon, Schedule as HearingIcon, Receipt as InvoiceIcon,
-  Description as DocIcon, Refresh, People, CheckCircle,
-  Warning, AccessTime, AttachMoney, CalendarToday, TrendingUp, TrendingDown,
-  ArrowForward, Assignment as TaskIcon,
-} from '@mui/icons-material';
+  Box, Typography, Card, CardContent, Button, List, ListItem, ListItemIcon, ListItemText, Avatar, CircularProgress, Chip, IconButton, LinearProgress } from '@mui/material';
+import Grid from '../components/Grid';
+import CasesIcon from '@mui/icons-material/Gavel';
+import HearingIcon from '@mui/icons-material/Schedule';
+import InvoiceIcon from '@mui/icons-material/Receipt';
+import DocIcon from '@mui/icons-material/Description';
+import Refresh from '@mui/icons-material/Refresh';
+import People from '@mui/icons-material/People';
+import CheckCircle from '@mui/icons-material/CheckCircle';
+import Warning from '@mui/icons-material/Warning';
+import AccessTime from '@mui/icons-material/AccessTime';
+import AttachMoney from '@mui/icons-material/AttachMoney';
+import CalendarToday from '@mui/icons-material/CalendarToday';
+import TrendingUp from '@mui/icons-material/TrendingUp';
+import TrendingDown from '@mui/icons-material/TrendingDown';
+import ArrowForward from '@mui/icons-material/ArrowForward';
+import TaskIcon from '@mui/icons-material/Assignment';
 import { format, parseISO, differenceInHours, differenceInMinutes } from 'date-fns';
 import {
   Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement,

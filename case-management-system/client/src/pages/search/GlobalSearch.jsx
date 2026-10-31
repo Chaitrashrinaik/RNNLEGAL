@@ -1,13 +1,14 @@
 ﻿import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
-  Box, Typography, Card, CardContent, TextField, InputAdornment, Grid, Chip,
-  List, ListItem, ListItemAvatar, ListItemText, Avatar, Divider, Tabs, Tab,
-  CircularProgress, Alert, Badge,
-} from '@mui/material';
-import {
-  Search as SearchIcon, Gavel, People, Description, Receipt, FilterList,
-} from '@mui/icons-material';
+  Box, Typography, Card, CardContent, TextField, InputAdornment, Chip, List, ListItem, ListItemAvatar, ListItemText, Avatar, Divider, Tabs, Tab, CircularProgress, Alert, Badge } from '@mui/material';
+import Grid from '../../components/Grid';
+import SearchIcon from '@mui/icons-material/Search';
+import Gavel from '@mui/icons-material/Gavel';
+import People from '@mui/icons-material/People';
+import Description from '@mui/icons-material/Description';
+import Receipt from '@mui/icons-material/Receipt';
+import FilterList from '@mui/icons-material/FilterList';
 import { format, parseISO } from 'date-fns';
 import api from '../../api/axios';
 

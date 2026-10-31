@@ -1,45 +1,16 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
-  Box,
-  Typography,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Chip,
-  Grid,
-  IconButton,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  List,
-  ListItem,
-  ListItemText,
-  Divider,
-  CircularProgress,
-  Alert,
-  Skeleton,
-  Tooltip,
-} from '@mui/material';
-import {
-  ArrowBack as ArrowBackIcon,
-  Refresh as RefreshIcon,
-  Visibility as ViewIcon,
-  Gavel as GavelIcon,
-  People as PeopleIcon,
-  Description as DescriptionIcon,
-  History as HistoryIcon,
-  Info as InfoIcon,
-} from '@mui/icons-material';
+  Box, Typography, Button, Card, CardContent, CardHeader, Chip, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, List, ListItem, ListItemText, Divider, CircularProgress, Alert, Skeleton, Tooltip } from '@mui/material';
+import Grid from '../../components/Grid';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import ViewIcon from '@mui/icons-material/Visibility';
+import GavelIcon from '@mui/icons-material/Gavel';
+import PeopleIcon from '@mui/icons-material/People';
+import DescriptionIcon from '@mui/icons-material/Description';
+import HistoryIcon from '@mui/icons-material/History';
+import InfoIcon from '@mui/icons-material/Info';
 import axios from '../../api/axios';
 
 const STATUS_COLORS = {

@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
-  Box, Typography, Card, CardContent, Grid, Button, Avatar, Divider, List, ListItem, ListItemText, CircularProgress, Chip,
-} from '@mui/material';
-import {
-  ArrowBack as BackIcon, Edit as EditIcon, Email as EmailIcon, Phone as PhoneIcon, Business as CompanyIcon, CreditCard as PanIcon, VpnKey as PortalIcon,
-} from '@mui/icons-material';
+  Box, Typography, Card, CardContent, Button, Avatar, Divider, List, ListItem, ListItemText, CircularProgress, Chip } from '@mui/material';
+import Grid from '../../components/Grid';
+import BackIcon from '@mui/icons-material/ArrowBack';
+import EditIcon from '@mui/icons-material/Edit';
+import EmailIcon from '@mui/icons-material/Email';
+import PhoneIcon from '@mui/icons-material/Phone';
+import CompanyIcon from '@mui/icons-material/Business';
+import PanIcon from '@mui/icons-material/CreditCard';
+import PortalIcon from '@mui/icons-material/VpnKey';
 import { format } from 'date-fns';
 import api from '../../api/axios';
 import { useAuth } from '../../context/AuthContext';

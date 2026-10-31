@@ -3,7 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import {
   Box, Card, CardContent, TextField, Button, Typography, Alert, CircularProgress, Stepper, Step, StepLabel,
 } from '@mui/material';
-import { Scale as ScaleIcon, Email, Lock, Sms } from '@mui/icons-material';
+import ScaleIcon from '@mui/icons-material/Scale';
+import Email from '@mui/icons-material/Email';
+import Lock from '@mui/icons-material/Lock';
+import Sms from '@mui/icons-material/Sms';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
 

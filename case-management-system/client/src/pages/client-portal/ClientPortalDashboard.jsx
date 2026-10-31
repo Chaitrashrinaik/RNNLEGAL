@@ -1,13 +1,23 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Box, Typography, Grid, Card, CardContent, Avatar, List, ListItem, ListItemAvatar, ListItemText,
-  Button, CircularProgress, Chip, IconButton, Divider,
-} from '@mui/material';
-import {
-  Gavel, CalendarMonth, Receipt, Description, Chat, Event, Person,
-  AttachMoney, CheckCircle, Warning, TrendingUp, ArrowForward, Refresh, Schedule, Notifications,
-} from '@mui/icons-material';
+  Box, Typography, Card, CardContent, Avatar, List, ListItem, ListItemAvatar, ListItemText, Button, CircularProgress, Chip, IconButton, Divider } from '@mui/material';
+import Grid from '../../components/Grid';
+import Gavel from '@mui/icons-material/Gavel';
+import CalendarMonth from '@mui/icons-material/CalendarMonth';
+import Receipt from '@mui/icons-material/Receipt';
+import Description from '@mui/icons-material/Description';
+import Chat from '@mui/icons-material/Chat';
+import Event from '@mui/icons-material/Event';
+import Person from '@mui/icons-material/Person';
+import AttachMoney from '@mui/icons-material/AttachMoney';
+import CheckCircle from '@mui/icons-material/CheckCircle';
+import Warning from '@mui/icons-material/Warning';
+import TrendingUp from '@mui/icons-material/TrendingUp';
+import ArrowForward from '@mui/icons-material/ArrowForward';
+import Refresh from '@mui/icons-material/Refresh';
+import Schedule from '@mui/icons-material/Schedule';
+import Notifications from '@mui/icons-material/Notifications';
 import { format, parseISO } from 'date-fns';
 import api from '../../api/axios';
 

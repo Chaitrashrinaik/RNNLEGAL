@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Box, Typography, Card, CardContent, List, ListItem, ListItemAvatar, ListItemText, Avatar, Button, Tabs, Tab, Divider, CircularProgress } from '@mui/material';
-import { Notifications as NotifIcon, Gavel, Receipt, Description, CheckCircle, Event, DoneAll } from '@mui/icons-material';
+import NotifIcon from '@mui/icons-material/Notifications';
+import Gavel from '@mui/icons-material/Gavel';
+import Receipt from '@mui/icons-material/Receipt';
+import Description from '@mui/icons-material/Description';
+import CheckCircle from '@mui/icons-material/CheckCircle';
+import Event from '@mui/icons-material/Event';
+import DoneAll from '@mui/icons-material/DoneAll';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import api from '../../api/axios';
 

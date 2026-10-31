@@ -1,7 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Typography, Button, IconButton, Menu, MenuItem, CircularProgress } from '@mui/material';
-import { Add as AddIcon, MoreVert as MoreIcon, Edit as EditIcon, Delete as DeleteIcon, Visibility as ViewIcon } from '@mui/icons-material';
+import AddIcon from '@mui/icons-material/Add';
+import MoreIcon from '@mui/icons-material/MoreVert';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ViewIcon from '@mui/icons-material/Visibility';
 import { DataGrid } from '@mui/x-data-grid';
 import { format } from 'date-fns';
 import api from '../../api/axios';

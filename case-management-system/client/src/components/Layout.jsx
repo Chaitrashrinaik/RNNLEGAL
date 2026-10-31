@@ -23,27 +23,25 @@ import {
   useTheme,
   Tooltip,
 } from '@mui/material';
-import {
-  Menu as MenuIcon,
-  Dashboard as DashboardIcon,
-  Gavel as CasesIcon,
-  People as ClientsIcon,
-  Description as DocumentsIcon,
-  Receipt as InvoicesIcon,
-  CalendarMonth as CalendarIcon,
-  Group as TeamIcon,
-  Notifications as NotificationsIcon,
-  Settings as SettingsIcon,
-  Search as SearchIcon,
-  ChevronLeft as ChevronLeftIcon,
-  ChevronRight as ChevronRightIcon,
-  Person as PersonIcon,
-  Logout as LogoutIcon,
-  Scale as ScaleIcon,
-  KeyboardArrowDown as ArrowDownIcon,
-  Assignment as AssignmentIcon,
-  History as HistoryIcon,
-} from '@mui/icons-material';
+import MenuIcon from '@mui/icons-material/Menu';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import CasesIcon from '@mui/icons-material/Gavel';
+import ClientsIcon from '@mui/icons-material/People';
+import DocumentsIcon from '@mui/icons-material/Description';
+import InvoicesIcon from '@mui/icons-material/Receipt';
+import CalendarIcon from '@mui/icons-material/CalendarMonth';
+import TeamIcon from '@mui/icons-material/Group';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import SettingsIcon from '@mui/icons-material/Settings';
+import SearchIcon from '@mui/icons-material/Search';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import PersonIcon from '@mui/icons-material/Person';
+import LogoutIcon from '@mui/icons-material/Logout';
+import ScaleIcon from '@mui/icons-material/Scale';
+import ArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import HistoryIcon from '@mui/icons-material/History';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
 

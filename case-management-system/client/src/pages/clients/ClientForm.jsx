@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
-  Box, Typography, Card, CardContent, Grid, TextField, Button, CircularProgress, Alert,
-} from '@mui/material';
-import { ArrowBack as BackIcon, Save as SaveIcon } from '@mui/icons-material';
+  Box, Typography, Card, CardContent, TextField, Button, CircularProgress, Alert } from '@mui/material';
+import Grid from '../../components/Grid';
+import BackIcon from '@mui/icons-material/ArrowBack';
+import SaveIcon from '@mui/icons-material/Save';
 import api from '../../api/axios';
 import toast from 'react-hot-toast';
 

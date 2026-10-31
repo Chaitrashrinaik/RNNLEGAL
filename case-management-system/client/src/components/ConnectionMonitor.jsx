@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Box, Typography, CircularProgress, Button } from '@mui/material';
-import { CloudOff as CloudOffIcon } from '@mui/icons-material';
+import CloudOffIcon from '@mui/icons-material/CloudOff';
 import { useAuth } from '../context/AuthContext';
 
 const API_BASE = import.meta.env.VITE_API_URL || '';

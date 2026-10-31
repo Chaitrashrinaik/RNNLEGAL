@@ -3,11 +3,17 @@ import {
   Dialog, DialogTitle, DialogContent, DialogActions, IconButton, Box, Typography,
   Button, CircularProgress, Chip, Stack,
 } from '@mui/material';
-import {
-  Close, Download, OpenInNew, PictureAsPdf as PdfIcon, Description as DocIcon,
-  Image as ImageIcon, TableChart as ExcelIcon, InsertDriveFile as FileIcon,
-  Slideshow as PptIcon, TextSnippet as TxtIcon, FolderZip as ZipIcon,
-} from '@mui/icons-material';
+import Close from '@mui/icons-material/Close';
+import Download from '@mui/icons-material/Download';
+import OpenInNew from '@mui/icons-material/OpenInNew';
+import PdfIcon from '@mui/icons-material/PictureAsPdf';
+import DocIcon from '@mui/icons-material/Description';
+import ImageIcon from '@mui/icons-material/Image';
+import ExcelIcon from '@mui/icons-material/TableChart';
+import FileIcon from '@mui/icons-material/InsertDriveFile';
+import PptIcon from '@mui/icons-material/Slideshow';
+import TxtIcon from '@mui/icons-material/TextSnippet';
+import ZipIcon from '@mui/icons-material/FolderZip';
 import api from '../api/axios';
 import { renderAsync } from 'docx-preview';
 

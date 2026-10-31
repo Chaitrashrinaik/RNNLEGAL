@@ -26,7 +26,7 @@ const logActivity = async ({ userId, userName, advocateId, role, action, entity,
 
     await getDb().execute(
       `INSERT INTO activity_logs (id, userId, advocateId, userName, role, action, entity, entityId, caseId, module, oldValue, newValue, relatedId, details, ipAddress, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())`,
-      [finalUserId, finalAdvocateId, finalUserName, finalRole, action, entity || null, entityId || null, caseId || null, module || null, oldValStr, newValStr, relatedId || null, detailsStr, ipAddress || null]
+      [id, finalUserId, finalAdvocateId, finalUserName, finalRole, action, entity || null, entityId || null, caseId || null, module || null, oldValStr, newValStr, relatedId || null, detailsStr, ipAddress || null]
     );
   } catch (error) {
     console.error('Log activity error:', error.message);

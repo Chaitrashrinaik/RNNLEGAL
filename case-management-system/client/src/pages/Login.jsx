@@ -4,7 +4,9 @@ import {
   Box, Card, CardContent, TextField, Button, Typography, Alert,
   InputAdornment, IconButton, CircularProgress, Tabs, Tab,
 } from '@mui/material';
-import { Visibility, VisibilityOff, Scale as ScaleIcon } from '@mui/icons-material';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import ScaleIcon from '@mui/icons-material/Scale';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 
@@ -34,7 +36,18 @@ export default function Login() {
     }
     setLoading(true);
     try {
-      await login(email, password, selectedRole);
+      try {
+        await login(email, password, selectedRole);
+      } catch (err) {
+        // If the account exists but was opened on the wrong tab, retry without
+        // forcing the role so any valid account can sign in from either tab.
+        const message = err.response?.data?.message || '';
+        if (err.response?.status === 401 && /correct login tab/i.test(message)) {
+          await login(email, password);
+        } else {
+          throw err;
+        }
+      }
       toast.success('Welcome back!');
       navigate('/');
     } catch (err) {

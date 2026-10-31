@@ -3,9 +3,15 @@ import {
   Box, Typography, Card, CardContent, List, ListItem, ListItemAvatar, ListItemText, Avatar,
   Button, IconButton, Tabs, Tab, Checkbox, Badge, Divider,
 } from '@mui/material';
-import {
-  Notifications as NotifIcon, Gavel, Receipt, PersonAdd, Description, CheckCircle, Schedule, Done as DoneIcon, DoneAll as DoneAllIcon,
-} from '@mui/icons-material';
+import NotifIcon from '@mui/icons-material/Notifications';
+import Gavel from '@mui/icons-material/Gavel';
+import Receipt from '@mui/icons-material/Receipt';
+import PersonAdd from '@mui/icons-material/PersonAdd';
+import Description from '@mui/icons-material/Description';
+import CheckCircle from '@mui/icons-material/CheckCircle';
+import Schedule from '@mui/icons-material/Schedule';
+import DoneIcon from '@mui/icons-material/Done';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
 import { formatDistanceToNow } from 'date-fns';
 import api from '../api/axios';
 import EmptyState from '../components/EmptyState';

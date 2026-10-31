@@ -6,11 +6,15 @@ import {
   Divider, TextField, InputAdornment, List, ListItem, ListItemText as MuiListItemText, Avatar,
   Card, CardContent, Tabs, Tab,
 } from '@mui/material';
-import {
-  Add as AddIcon, FilterList as FilterIcon, MoreVert as MoreIcon,
-  Delete as DeleteIcon, Edit as EditIcon, Visibility as ViewIcon,
-  Close as CloseIcon, Search as SearchIcon, Gavel as CasesIcon,
-} from '@mui/icons-material';
+import AddIcon from '@mui/icons-material/Add';
+import FilterIcon from '@mui/icons-material/FilterList';
+import MoreIcon from '@mui/icons-material/MoreVert';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import ViewIcon from '@mui/icons-material/Visibility';
+import CloseIcon from '@mui/icons-material/Close';
+import SearchIcon from '@mui/icons-material/Search';
+import CasesIcon from '@mui/icons-material/Gavel';
 import { DataGrid } from '@mui/x-data-grid';
 import { format } from 'date-fns';
 import api from '../../api/axios';
@@ -39,6 +43,7 @@ export default function CasesList() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
+  const [rowCount, setRowCount] = useState(0);
   const [filterDrawer, setFilterDrawer] = useState(false);
   const [filters, setFilters] = useState({ status: [], priority: [], type: [], court: '' });
   const [selectedRows, setSelectedRows] = useState([]);
@@ -68,6 +73,7 @@ export default function CasesList() {
           );
         }
         setCases(filtered);
+        setRowCount(filtered.length);
       } else {
         const params = {
           page: paginationModel.page + 1,
@@ -97,9 +103,11 @@ export default function CasesList() {
           caseType: c.caseType || c.type || '',
         }));
         setCases(rows);
+        setRowCount(data.pagination?.total ?? rows.length);
       }
     } catch {
       setCases([]);
+      setRowCount(0);
     } finally {
       setLoading(false);
     }
@@ -253,7 +261,7 @@ export default function CasesList() {
       <Box sx={{ height: 'calc(100vh - 280px)' }}>
         <DataGrid rows={cases} columns={columns} loading={loading}
           paginationModel={paginationModel} onPaginationModelChange={setPaginationModel}
-          paginationMode="server" checkboxSelection disableRowSelectionOnClick
+          paginationMode="server" rowCount={rowCount} checkboxSelection disableRowSelectionOnClick
           onRowSelectionModelChange={setSelectedRows}
           onRowClick={(params) => navigate(`/cases/${params.row.id}`)}
           pageSizeOptions={[5, 10, 25, 50]}

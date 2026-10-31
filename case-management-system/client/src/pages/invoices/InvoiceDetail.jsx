@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
-  Box, Typography, Card, CardContent, Grid, Button, Divider, CircularProgress, Chip, TextField, MenuItem,
-} from '@mui/material';
-import {
-  ArrowBack as BackIcon, Print as PrintIcon, Send as SendIcon, CheckCircle as PaidIcon, Edit as EditIcon,
-} from '@mui/icons-material';
+  Box, Typography, Card, CardContent, Button, Divider, CircularProgress, Chip, TextField, MenuItem } from '@mui/material';
+import Grid from '../../components/Grid';
+import BackIcon from '@mui/icons-material/ArrowBack';
+import PrintIcon from '@mui/icons-material/Print';
+import SendIcon from '@mui/icons-material/Send';
+import PaidIcon from '@mui/icons-material/CheckCircle';
+import EditIcon from '@mui/icons-material/Edit';
 import { format } from 'date-fns';
 import api from '../../api/axios';
 import StatusChip from '../../components/StatusChip';

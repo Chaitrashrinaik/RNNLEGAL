@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import {
   Box, Typography, Card, CardContent, Button, IconButton, Chip, Divider,
 } from '@mui/material';
-import {
-  ChevronLeft, ChevronRight, Gavel as HearingIcon, LocationOn, CalendarMonth,
-} from '@mui/icons-material';
+import ChevronLeft from '@mui/icons-material/ChevronLeft';
+import ChevronRight from '@mui/icons-material/ChevronRight';
+import HearingIcon from '@mui/icons-material/Gavel';
+import LocationOn from '@mui/icons-material/LocationOn';
+import CalendarMonth from '@mui/icons-material/CalendarMonth';
 import {
   format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, addMonths, subMonths,
   isSameMonth, isSameDay, isToday, parseISO,

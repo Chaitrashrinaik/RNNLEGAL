@@ -3,7 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import {
   Box, Typography, TextField, Button, Card, CardContent, Alert, InputAdornment,
 } from '@mui/material';
-import { Phone, ArrowBack } from '@mui/icons-material';
+import Phone from '@mui/icons-material/Phone';
+import ArrowBack from '@mui/icons-material/ArrowBack';
 import api from '../../api/axios';
 
 export default function ClientPortalLogin() {

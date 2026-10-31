@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Box, Typography, Card, CardContent, Grid, TextField, Chip, Avatar, List, ListItem, ListItemAvatar,
-  ListItemText, InputAdornment, CircularProgress, MenuItem, Button,
-} from '@mui/material';
-import { Search, Gavel, CalendarMonth, FilterList } from '@mui/icons-material';
+  Box, Typography, Card, CardContent, TextField, Chip, Avatar, List, ListItem, ListItemAvatar, ListItemText, InputAdornment, CircularProgress, MenuItem, Button } from '@mui/material';
+import Grid from '../../components/Grid';
+import Search from '@mui/icons-material/Search';
+import Gavel from '@mui/icons-material/Gavel';
+import CalendarMonth from '@mui/icons-material/CalendarMonth';
+import FilterList from '@mui/icons-material/FilterList';
 import { format, parseISO } from 'date-fns';
 import api from '../../api/axios';
 

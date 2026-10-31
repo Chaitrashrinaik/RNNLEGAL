@@ -1,9 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 import {
-  Box, Typography, Card, CardContent, Grid, TextField, Button, Divider, Switch, FormControlLabel,
-  Avatar, Tabs, Tab, CircularProgress,
-} from '@mui/material';
-import { Save as SaveIcon, Person as PersonIcon, Business as FirmIcon, Notifications as NotifIcon, CameraAlt as CameraIcon } from '@mui/icons-material';
+  Box, Typography, Card, CardContent, TextField, Button, Divider, Switch, FormControlLabel, Avatar, Tabs, Tab, CircularProgress } from '@mui/material';
+import Grid from '../components/Grid';
+import SaveIcon from '@mui/icons-material/Save';
+import PersonIcon from '@mui/icons-material/Person';
+import FirmIcon from '@mui/icons-material/Business';
+import NotifIcon from '@mui/icons-material/Notifications';
+import CameraIcon from '@mui/icons-material/CameraAlt';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/axios';
 

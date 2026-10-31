@@ -1,5 +1,7 @@
 import { Card, CardContent, Box, Typography, Chip } from '@mui/material';
-import { Schedule, LocationOn, Person } from '@mui/icons-material';
+import Schedule from '@mui/icons-material/Schedule';
+import LocationOn from '@mui/icons-material/LocationOn';
+import Person from '@mui/icons-material/Person';
 import { format } from 'date-fns';
 
 export default function HearingCard({ hearing, onClick }) {

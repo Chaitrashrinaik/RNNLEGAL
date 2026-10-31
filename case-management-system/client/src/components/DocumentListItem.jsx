@@ -2,12 +2,16 @@ import { useState } from 'react';
 import {
   Box, Typography, IconButton, Stack, Tooltip, Chip,
 } from '@mui/material';
-import {
-  Visibility as ViewIcon, Download as DownloadIcon,
-  PictureAsPdf as PdfIcon, Description as DocIcon, Image as ImageIcon,
-  TableChart as ExcelIcon, InsertDriveFile as FileIcon,
-  Slideshow as PptIcon, TextSnippet as TxtIcon, FolderZip as ZipIcon,
-} from '@mui/icons-material';
+import ViewIcon from '@mui/icons-material/Visibility';
+import DownloadIcon from '@mui/icons-material/Download';
+import PdfIcon from '@mui/icons-material/PictureAsPdf';
+import DocIcon from '@mui/icons-material/Description';
+import ImageIcon from '@mui/icons-material/Image';
+import ExcelIcon from '@mui/icons-material/TableChart';
+import FileIcon from '@mui/icons-material/InsertDriveFile';
+import PptIcon from '@mui/icons-material/Slideshow';
+import TxtIcon from '@mui/icons-material/TextSnippet';
+import ZipIcon from '@mui/icons-material/FolderZip';
 import { format } from 'date-fns';
 import api from '../api/axios';
 import DocumentViewer from './DocumentViewer';

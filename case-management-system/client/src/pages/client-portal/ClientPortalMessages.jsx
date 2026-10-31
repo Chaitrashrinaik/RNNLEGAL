@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { Box, Typography, Card, CardContent, List, ListItem, ListItemAvatar, ListItemText, Avatar, TextField, IconButton, Badge, CircularProgress, Chip } from '@mui/material';
-import { Send, ArrowBack, Chat } from '@mui/icons-material';
+import Send from '@mui/icons-material/Send';
+import ArrowBack from '@mui/icons-material/ArrowBack';
+import Chat from '@mui/icons-material/Chat';
 import { format, parseISO } from 'date-fns';
 import api from '../../api/axios';
 

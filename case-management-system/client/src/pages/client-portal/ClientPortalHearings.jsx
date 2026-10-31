@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Typography, Card, CardContent, List, ListItem, ListItemAvatar, ListItemText, Avatar, Chip, CircularProgress, Button, TextField, MenuItem } from '@mui/material';
-import { CalendarMonth, ArrowForward } from '@mui/icons-material';
+import CalendarMonth from '@mui/icons-material/CalendarMonth';
+import ArrowForward from '@mui/icons-material/ArrowForward';
 import { format, parseISO } from 'date-fns';
 import api from '../../api/axios';
 

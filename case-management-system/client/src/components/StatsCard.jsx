@@ -1,5 +1,6 @@
 import { Card, CardContent, Box, Typography } from '@mui/material';
-import { TrendingUp, TrendingDown } from '@mui/icons-material';
+import TrendingUp from '@mui/icons-material/TrendingUp';
+import TrendingDown from '@mui/icons-material/TrendingDown';
 
 export default function StatsCard({ icon, value, label, trend, trendValue, color = 'primary.main' }) {
   return (

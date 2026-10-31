@@ -3,10 +3,18 @@ import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import {
   Box, Typography, List, ListItem, ListItemIcon, ListItemText, Avatar, IconButton, Badge, Divider, Chip,
 } from '@mui/material';
-import {
-  Dashboard as DashboardIcon, Gavel, Description, Receipt, CalendarMonth,
-  Notifications, Chat, Event, Person, Logout, Menu, ChevronLeft,
-} from '@mui/icons-material';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import Gavel from '@mui/icons-material/Gavel';
+import Description from '@mui/icons-material/Description';
+import Receipt from '@mui/icons-material/Receipt';
+import CalendarMonth from '@mui/icons-material/CalendarMonth';
+import Notifications from '@mui/icons-material/Notifications';
+import Chat from '@mui/icons-material/Chat';
+import Event from '@mui/icons-material/Event';
+import Person from '@mui/icons-material/Person';
+import Logout from '@mui/icons-material/Logout';
+import Menu from '@mui/icons-material/Menu';
+import ChevronLeft from '@mui/icons-material/ChevronLeft';
 import api from '../../api/axios';
 
 const DRAWER_WIDTH = 260;

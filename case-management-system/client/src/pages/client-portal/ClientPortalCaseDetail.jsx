@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
-  Box, Typography, Card, CardContent, Grid, Chip, Avatar, List, ListItem, ListItemAvatar,
-  ListItemText, Tabs, Tab, CircularProgress, Button, Divider,
-} from '@mui/material';
-import {
-  ArrowBack, Gavel, CalendarMonth, Description, Person, LocationOn,
-  Note, CheckCircle, Upload as UploadIcon,
-} from '@mui/icons-material';
+  Box, Typography, Card, CardContent, Chip, Avatar, List, ListItem, ListItemAvatar, ListItemText, Tabs, Tab, CircularProgress, Button, Divider } from '@mui/material';
+import Grid from '../../components/Grid';
+import ArrowBack from '@mui/icons-material/ArrowBack';
+import Gavel from '@mui/icons-material/Gavel';
+import CalendarMonth from '@mui/icons-material/CalendarMonth';
+import Description from '@mui/icons-material/Description';
+import Person from '@mui/icons-material/Person';
+import LocationOn from '@mui/icons-material/LocationOn';
+import Note from '@mui/icons-material/Note';
+import CheckCircle from '@mui/icons-material/CheckCircle';
+import UploadIcon from '@mui/icons-material/Upload';
 import { format, parseISO } from 'date-fns';
 import api from '../../api/axios';
 

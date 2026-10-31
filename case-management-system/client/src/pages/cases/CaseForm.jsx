@@ -2,21 +2,10 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import {
-  Box,
-  Typography,
-  Card,
-  CardContent,
-  Grid,
-  TextField,
-  Button,
-  MenuItem,
-  Autocomplete,
-  Chip,
-  CircularProgress,
-  Divider,
-  Alert,
-} from '@mui/material';
-import { ArrowBack as BackIcon, Save as SaveIcon } from '@mui/icons-material';
+  Box, Typography, Card, CardContent, TextField, Button, MenuItem, Autocomplete, Chip, CircularProgress, Divider, Alert } from '@mui/material';
+import Grid from '../../components/Grid';
+import BackIcon from '@mui/icons-material/ArrowBack';
+import SaveIcon from '@mui/icons-material/Save';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import api from '../../api/axios';

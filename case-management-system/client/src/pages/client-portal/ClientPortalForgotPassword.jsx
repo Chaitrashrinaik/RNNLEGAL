@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Box, Typography, TextField, Button, Card, CardContent, Alert, Stepper, Step, StepLabel } from '@mui/material';
-import { Phone, Lock, ArrowBack, Sms, CheckCircle } from '@mui/icons-material';
+import Phone from '@mui/icons-material/Phone';
+import Lock from '@mui/icons-material/Lock';
+import ArrowBack from '@mui/icons-material/ArrowBack';
+import Sms from '@mui/icons-material/Sms';
+import CheckCircle from '@mui/icons-material/CheckCircle';
 import api from '../../api/axios';
 
 const steps = ['Verify Mobile', 'Enter OTP', 'Set New Password'];

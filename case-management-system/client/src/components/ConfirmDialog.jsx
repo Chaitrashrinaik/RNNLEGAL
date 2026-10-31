@@ -6,7 +6,7 @@ import {
   DialogActions,
   Button,
 } from '@mui/material';
-import { Warning } from '@mui/icons-material';
+import Warning from '@mui/icons-material/Warning';
 
 export default function ConfirmDialog({
   open,

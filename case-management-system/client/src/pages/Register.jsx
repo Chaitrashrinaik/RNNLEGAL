@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  Box, Card, CardContent, TextField, Button, Typography, Alert,
-  InputAdornment, IconButton, CircularProgress, Grid,
-} from '@mui/material';
-import { Visibility, VisibilityOff, Scale as ScaleIcon } from '@mui/icons-material';
+  Box, Card, CardContent, TextField, Button, Typography, Alert, InputAdornment, IconButton, CircularProgress } from '@mui/material';
+import Grid from '../components/Grid';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import ScaleIcon from '@mui/icons-material/Scale';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 

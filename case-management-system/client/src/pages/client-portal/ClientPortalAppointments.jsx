@@ -3,7 +3,12 @@ import {
   Box, Typography, Card, CardContent, List, ListItem, ListItemAvatar, ListItemText, Avatar,
   Button, TextField, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Chip, CircularProgress,
 } from '@mui/material';
-import { Event, Add, VideoCall, Phone, MeetingRoom, Cancel } from '@mui/icons-material';
+import Event from '@mui/icons-material/Event';
+import Add from '@mui/icons-material/Add';
+import VideoCall from '@mui/icons-material/VideoCall';
+import Phone from '@mui/icons-material/Phone';
+import MeetingRoom from '@mui/icons-material/MeetingRoom';
+import Cancel from '@mui/icons-material/Cancel';
 import { format, parseISO } from 'date-fns';
 import api from '../../api/axios';
 

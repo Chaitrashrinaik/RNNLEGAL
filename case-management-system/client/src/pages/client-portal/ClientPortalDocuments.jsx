@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Box, Typography, Card, CardContent, List, ListItem, ListItemAvatar, ListItemText, Avatar, TextField, InputAdornment, CircularProgress, Button, MenuItem, Chip } from '@mui/material';
-import { Description, Search, Download, FilterList } from '@mui/icons-material';
+import Description from '@mui/icons-material/Description';
+import Search from '@mui/icons-material/Search';
+import Download from '@mui/icons-material/Download';
+import FilterList from '@mui/icons-material/FilterList';
 import { format, parseISO } from 'date-fns';
 import api from '../../api/axios';
 

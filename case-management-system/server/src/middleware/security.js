@@ -4,7 +4,11 @@ const compression = require('compression');
 
 const apiLimiter = rateLimit({
   windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '900000'),
-  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '100'),
+  // An SPA fires many requests per page view, and a whole office can share one
+  // IP, so the general API limit must be generous. Auth/OTP have their own
+  // strict limiters.
+  max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '3000'),
+  skip: (req) => req.path === '/health',
   message: { success: false, message: 'Too many requests, please try again later.' },
   standardHeaders: true,
   legacyHeaders: false,
@@ -13,6 +17,9 @@ const apiLimiter = rateLimit({
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 20,
+  // Only failed attempts count, so a team behind one office IP can all sign in
+  // without exhausting the limit.
+  skipSuccessfulRequests: true,
   message: { success: false, message: 'Too many login attempts, please try again later.' },
   standardHeaders: true,
   legacyHeaders: false,

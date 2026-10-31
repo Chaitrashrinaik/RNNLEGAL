@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Typography, Button, CircularProgress, Card, CardContent, List, ListItem, Divider } from '@mui/material';
-import { Add as AddIcon, Receipt as InvoiceIcon } from '@mui/icons-material';
+import AddIcon from '@mui/icons-material/Add';
+import InvoiceIcon from '@mui/icons-material/Receipt';
 import { DataGrid } from '@mui/x-data-grid';
 import { format } from 'date-fns';
 import api from '../../api/axios';
@@ -17,6 +18,7 @@ export default function InvoicesList() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
+  const [rowCount, setRowCount] = useState(0);
 
   const fetchInvoices = useCallback(async () => {
     setLoading(true);
@@ -39,8 +41,10 @@ export default function InvoicesList() {
         );
       }
       setInvoices(filtered);
+      setRowCount(isClient ? filtered.length : (data.pagination?.total ?? filtered.length));
     } catch {
       setInvoices([]);
+      setRowCount(0);
     } finally { setLoading(false); }
   }, [paginationModel, search, isClient]);
 
@@ -145,7 +149,7 @@ export default function InvoicesList() {
       <Box sx={{ height: 'calc(100vh - 280px)' }}>
         <DataGrid rows={invoices} columns={columns} loading={loading}
           paginationModel={paginationModel} onPaginationModelChange={setPaginationModel}
-          paginationMode="server" disableRowSelectionOnClick
+          paginationMode="server" rowCount={rowCount} disableRowSelectionOnClick
           onRowClick={(params) => navigate(`/invoices/${params.row.id}`)}
           pageSizeOptions={[5, 10, 25]}
           sx={{ '& .MuiDataGrid-row': { cursor: 'pointer' } }}

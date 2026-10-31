@@ -1,15 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Box, Typography, Card, CardContent, TextField, InputAdornment, Grid, Chip,
-  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
-  IconButton, Collapse, CircularProgress, Alert, Select, MenuItem,
-  FormControl, InputLabel, TablePagination,
-} from '@mui/material';
-import {
-  Search as SearchIcon, AccountBalance, FilterList, ExpandMore, ExpandLess,
-  OpenInNew,
-} from '@mui/icons-material';
+  Box, Typography, Card, CardContent, TextField, InputAdornment, Chip, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Collapse, CircularProgress, Alert, Select, MenuItem, FormControl, InputLabel, TablePagination } from '@mui/material';
+import Grid from '../../components/Grid';
+import SearchIcon from '@mui/icons-material/Search';
+import AccountBalance from '@mui/icons-material/AccountBalance';
+import FilterList from '@mui/icons-material/FilterList';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import OpenInNew from '@mui/icons-material/OpenInNew';
 import { format } from 'date-fns';
 import api from '../../api/axios';
 

@@ -5,8 +5,6 @@ export default defineConfig({
   plugins: [react()],
   base: '/',
   optimizeDeps: {
-    force: true,
-    exclude: ['@mui/icons-material'],
     include: ['prop-types', 'react-is', 'hoist-non-react-statics'],
   },
   build: {

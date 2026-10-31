@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Box, Typography, Card, CardContent, List, ListItem, ListItemText, Avatar, Chip, CircularProgress, TextField, MenuItem, Button } from '@mui/material';
-import { Receipt, Download } from '@mui/icons-material';
+import Receipt from '@mui/icons-material/Receipt';
+import Download from '@mui/icons-material/Download';
 import { format, parseISO } from 'date-fns';
 import api from '../../api/axios';
 

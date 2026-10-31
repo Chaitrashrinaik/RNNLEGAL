@@ -3,6 +3,15 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 
+// Render (and some other PaaS) expose the public URL as RENDER_EXTERNAL_URL.
+// Use it as the default so a fresh deploy works without hand-editing env vars.
+if (!process.env.CLIENT_URL && process.env.RENDER_EXTERNAL_URL) {
+  process.env.CLIENT_URL = process.env.RENDER_EXTERNAL_URL;
+}
+if (!process.env.CLIENT_PORTAL_URL && process.env.CLIENT_URL) {
+  process.env.CLIENT_PORTAL_URL = `${process.env.CLIENT_URL.replace(/\/$/, '')}/client-portal`;
+}
+
 const logger = require('./utils/logger');
 
 const validateEnv = () => {
@@ -47,6 +56,13 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const HOST = process.env.HOST || '0.0.0.0';
 
+// Behind a PaaS/reverse proxy (Render, Fly, nginx, ...) the real client IP is
+// in X-Forwarded-For. Without this, every request looks like it comes from the
+// proxy, so one user can exhaust the shared rate limit for everybody.
+if (process.env.NODE_ENV === 'production' || process.env.TRUST_PROXY) {
+  app.set('trust proxy', 1);
+}
+
 const startServer = async () => {
   try {
     validateEnv();
@@ -87,7 +103,12 @@ const startServer = async () => {
     app.use(express.json({ limit: '10mb' }));
     app.use(express.urlencoded({ extended: true }));
     app.use(sanitizeInput);
-    app.use('/api', (req, res, next) => { if (req.path === '/api/health') return next(); apiLimiter(req, res, next); });
+    app.use('/api', (req, res, next) => {
+      // req.path is relative to the mount point, so health is '/health' here.
+      // Health checks are polled by the client and must never be rate limited.
+      if (req.path === '/health') return next();
+      apiLimiter(req, res, next);
+    });
 
     app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 

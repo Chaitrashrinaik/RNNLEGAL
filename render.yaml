@@ -1,0 +1,72 @@
+# Render Blueprint for CaseBench
+# Docs: https://render.com/docs/blueprint-spec
+#
+# Deploy: push this repo to GitHub, then in Render choose
+#   New +  ->  Blueprint  ->  pick this repository.
+# Render reads this file and creates the service below.
+#
+# NOTE: the free plan needs no credit card. If Render asks for payment,
+# you are on a paid instance type or adding a persistent disk - don't.
+
+services:
+  - type: web
+    name: casebench
+    runtime: docker
+    plan: free
+    region: singapore
+    dockerfilePath: ./case-management-system/Dockerfile
+    dockerContext: ./case-management-system
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: RATE_LIMIT_MAX_REQUESTS
+        value: 3000
+      - key: JWT_EXPIRE
+        value: 7d
+
+      # Generated once by Render and stored securely.
+      - key: JWT_SECRET
+        generateValue: true
+
+      # TiDB Cloud connection. sync:false means Render prompts you for these
+      # when the Blueprint is applied, so secrets never live in git.
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_NAME
+        sync: false
+
+      # Leave blank to store uploads on the container's local disk.
+      # Set these to a Cloudinary account (free tier, no card) so uploaded
+      # documents survive restarts and redeploys.
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+
+      # Optional: outgoing email (password reset links).
+      - key: EMAIL_HOST
+        sync: false
+      - key: EMAIL_PORT
+        sync: false
+      - key: EMAIL_USER
+        sync: false
+      - key: EMAIL_PASS
+        sync: false
+
+      # Optional: eCourts integration.
+      - key: ECOURTS_API_KEY
+        sync: false
+      - key: ECOURTS_API_BASE_URL
+        sync: false

@@ -30,9 +30,13 @@ COPY server/package.json server/package-lock.json ./server/
 WORKDIR /app/server
 RUN npm ci --omit=dev
 
-# Copy server source, then the built client from stage 1.
-COPY server/ ./server/
-COPY --from=client-builder /build/client/dist ./client/dist
+# Copy server source into the current working directory (/app/server).
+# Note: COPY destinations are relative to WORKDIR, so this must be "./", not
+# "./server/", or the app would end up at /app/server/server.
+COPY server/ ./
+# The client build must sit at /app/client/dist because the server resolves it
+# as path.join(__dirname, '../../client/dist') from /app/server/src.
+COPY --from=client-builder /build/client/dist /app/client/dist
 
 # Local document uploads land in server/uploads (served at /uploads).
 RUN mkdir -p /app/server/uploads && chown -R node:node /app && mkdir -p /app/server/logs && chown -R node:node /app/server/logs

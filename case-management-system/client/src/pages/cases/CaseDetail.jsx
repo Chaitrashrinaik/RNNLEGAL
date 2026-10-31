@@ -1,20 +1,34 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
-  Box, Typography, Card, CardContent, Grid, Button, Tabs, Tab, Divider, Avatar,
-  List, ListItem, ListItemAvatar, ListItemText, TextField, CircularProgress, IconButton,
-  Dialog, DialogTitle, DialogContent, DialogActions, Chip, LinearProgress, MenuItem,
-  Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
-  Alert, Tooltip, Stack,
-} from '@mui/material';
-import {
-  ArrowBack as BackIcon, Edit as EditIcon, Schedule as HearingIcon, Description as DocIcon,
-  Note as NoteIcon, Upload as UploadIcon, Download as DownloadIcon, Add as AddIcon,
-  Send as SendIcon, Gavel, CalendarMonth, LocationOn, Payments as PaymentsIcon,
-  AccountBalance as CourtIcon, Timeline as TimelineIcon, Assignment as TaskIcon,
-  Group as TeamIcon, Update as UpdateIcon, AttachMoney, CheckCircle, Info, EditNote,
-  History as HistoryIcon, Summarize, Refresh, Visibility as ViewIcon,
-} from '@mui/icons-material';
+  Box, Typography, Card, CardContent, Button, Tabs, Tab, Divider, Avatar, List, ListItem, ListItemAvatar, ListItemText, TextField, CircularProgress, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Chip, LinearProgress, MenuItem, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Alert, Tooltip, Stack } from '@mui/material';
+import Grid from '../../components/Grid';
+import BackIcon from '@mui/icons-material/ArrowBack';
+import EditIcon from '@mui/icons-material/Edit';
+import HearingIcon from '@mui/icons-material/Schedule';
+import DocIcon from '@mui/icons-material/Description';
+import NoteIcon from '@mui/icons-material/Note';
+import UploadIcon from '@mui/icons-material/Upload';
+import DownloadIcon from '@mui/icons-material/Download';
+import AddIcon from '@mui/icons-material/Add';
+import SendIcon from '@mui/icons-material/Send';
+import Gavel from '@mui/icons-material/Gavel';
+import CalendarMonth from '@mui/icons-material/CalendarMonth';
+import LocationOn from '@mui/icons-material/LocationOn';
+import PaymentsIcon from '@mui/icons-material/Payments';
+import CourtIcon from '@mui/icons-material/AccountBalance';
+import TimelineIcon from '@mui/icons-material/Timeline';
+import TaskIcon from '@mui/icons-material/Assignment';
+import TeamIcon from '@mui/icons-material/Group';
+import UpdateIcon from '@mui/icons-material/Update';
+import AttachMoney from '@mui/icons-material/AttachMoney';
+import CheckCircle from '@mui/icons-material/CheckCircle';
+import Info from '@mui/icons-material/Info';
+import EditNote from '@mui/icons-material/EditNote';
+import HistoryIcon from '@mui/icons-material/History';
+import Summarize from '@mui/icons-material/Summarize';
+import Refresh from '@mui/icons-material/Refresh';
+import ViewIcon from '@mui/icons-material/Visibility';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { format } from 'date-fns';

@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import {
-  Box, Typography, Card, CardContent, Grid, TextField, Button, Avatar, Divider, Alert, CircularProgress,
-} from '@mui/material';
-import { Person, Save, Lock } from '@mui/icons-material';
+  Box, Typography, Card, CardContent, TextField, Button, Avatar, Divider, Alert, CircularProgress } from '@mui/material';
+import Grid from '../../components/Grid';
+import Person from '@mui/icons-material/Person';
+import Save from '@mui/icons-material/Save';
+import Lock from '@mui/icons-material/Lock';
 import api from '../../api/axios';
 import toast from 'react-hot-toast';
 

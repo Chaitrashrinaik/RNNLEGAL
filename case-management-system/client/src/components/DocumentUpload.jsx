@@ -2,7 +2,10 @@ import { useState, useRef } from 'react';
 import {
   Box, Button, Typography, LinearProgress, Stack, IconButton, Chip, Alert,
 } from '@mui/material';
-import { CloudUpload, Close, CheckCircle, Error as ErrorIcon } from '@mui/icons-material';
+import CloudUpload from '@mui/icons-material/CloudUpload';
+import Close from '@mui/icons-material/Close';
+import CheckCircle from '@mui/icons-material/CheckCircle';
+import ErrorIcon from '@mui/icons-material/Error';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
 
