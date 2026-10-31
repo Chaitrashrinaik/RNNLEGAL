@@ -17,7 +17,7 @@ services:
     dockerfilePath: ./case-management-system/Dockerfile
     dockerContext: ./case-management-system
     healthCheckPath: /api/health
-    autoDeploy: true
+    autoDeployTrigger: commit
     envVars:
       - key: NODE_ENV
         value: production
@@ -45,28 +45,7 @@ services:
       - key: DB_NAME
         sync: false
 
-      # Leave blank to store uploads on the container's local disk.
-      # Set these to a Cloudinary account (free tier, no card) so uploaded
-      # documents survive restarts and redeploys.
-      - key: CLOUDINARY_CLOUD_NAME
-        sync: false
-      - key: CLOUDINARY_API_KEY
-        sync: false
-      - key: CLOUDINARY_API_SECRET
-        sync: false
-
-      # Optional: outgoing email (password reset links).
-      - key: EMAIL_HOST
-        sync: false
-      - key: EMAIL_PORT
-        sync: false
-      - key: EMAIL_USER
-        sync: false
-      - key: EMAIL_PASS
-        sync: false
-
-      # Optional: eCourts integration.
-      - key: ECOURTS_API_KEY
-        sync: false
-      - key: ECOURTS_API_BASE_URL
-        sync: false
+# Optional integrations (Cloudinary for persistent uploads, email, eCourts) are
+# intentionally NOT listed here so the Blueprint form only asks for what is
+# required. Add them later under the service's Environment tab; the server
+# reads them on the next deploy.
