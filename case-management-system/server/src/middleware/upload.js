@@ -2,6 +2,7 @@ const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 
 const isCloudinaryConfigured = !!(
@@ -42,14 +43,28 @@ const AVATAR_MIMES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
 const MAX_DOC_SIZE = 50 * 1024 * 1024;
 const MAX_AVATAR_SIZE = 5 * 1024 * 1024;
 
+// Local-disk fallback folders. They must exist before multer writes to them:
+// in a fresh container/Docker image the uploads tree is not present, which
+// made every upload fail with ENOENT.
+const UPLOAD_ROOT = path.join(__dirname, '../../uploads');
+const DOCUMENT_DIR = path.join(UPLOAD_ROOT, 'documents');
+const AVATAR_DIR = path.join(UPLOAD_ROOT, 'avatars');
+
+if (!isCloudinaryConfigured) {
+  for (const dir of [DOCUMENT_DIR, AVATAR_DIR]) {
+    try {
+      fs.mkdirSync(dir, { recursive: true });
+    } catch (error) {
+      console.error(`Could not create upload directory ${dir}:`, error.message);
+    }
+  }
+}
+
 function buildStorage(folderFn) {
   if (!isCloudinaryConfigured) {
     const diskStorage = multer.diskStorage({
       destination: (req, file, cb) => {
-        const folder = file.fieldname === 'avatar'
-          ? path.join(__dirname, '../../uploads/avatars')
-          : path.join(__dirname, '../../uploads/documents');
-        cb(null, folder);
+        cb(null, file.fieldname === 'avatar' ? AVATAR_DIR : DOCUMENT_DIR);
       },
       filename: (req, file, cb) => {
         cb(null, `${uuidv4()}${path.extname(file.originalname).toLowerCase()}`);
