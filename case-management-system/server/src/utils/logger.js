@@ -35,16 +35,16 @@ const logger = winston.createLogger({
   ],
 });
 
-if (isDev) {
-  logger.add(new winston.transports.Console({
-    format: winston.format.combine(
-      winston.format.colorize(),
-      winston.format.printf(({ timestamp, level, message, stack }) => {
-        const stackStr = stack ? `\n${stack}` : '';
-        return `[${timestamp}] ${level}: ${message}${stackStr}`;
-      })
-    ),
-  }));
-}
+// Always log to stdout as well: hosted platforms (Render, Docker, etc.) collect
+// logs from the process output, so without this production errors are invisible.
+logger.add(new winston.transports.Console({
+  format: winston.format.combine(
+    isDev ? winston.format.colorize() : winston.format.uncolorize(),
+    winston.format.printf(({ timestamp, level, message, stack }) => {
+      const stackStr = stack ? `\n${stack}` : '';
+      return `[${timestamp}] ${level}: ${message}${stackStr}`;
+    })
+  ),
+}));
 
 module.exports = logger;
