@@ -29,6 +29,17 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    // The instance defaults to Content-Type: application/json. When the body is
+    // FormData, axios would honour that header and convert the payload to JSON,
+    // silently dropping the file. Clearing it lets the browser send a proper
+    // multipart/form-data request with the correct boundary.
+    if (typeof FormData !== 'undefined' && config.data instanceof FormData && config.headers) {
+      if (typeof config.headers.delete === 'function') {
+        config.headers.delete('Content-Type');
+      } else {
+        delete config.headers['Content-Type'];
+      }
+    }
     return config;
   },
   (error) => Promise.reject(error)

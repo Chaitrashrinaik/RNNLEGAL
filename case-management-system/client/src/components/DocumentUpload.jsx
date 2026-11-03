@@ -42,7 +42,7 @@ export default function DocumentUpload({ caseId, category, onUploadComplete, but
 
   const handleFileSelect = (selectedFile) => {
     if (!selectedFile) return;
-    if (!ACCEPTED_TYPES.includes(selectedFile.mimetype || '')) {
+    if (!ACCEPTED_TYPES.includes(selectedFile.type || '')) {
       const ext = selectedFile.name.split('.').pop()?.toLowerCase();
       const allowedExts = ['pdf', 'jpg', 'jpeg', 'png', 'gif', 'webp', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'zip'];
       if (!allowedExts.includes(ext)) {
