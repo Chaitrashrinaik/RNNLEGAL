@@ -23,9 +23,10 @@ const courts = [
   { value: 'other', label: 'Other' },
 ];
 const courtLocations = [
-  { value: 'dharwad', label: 'Dharwad', digits: 6 },
-  { value: 'gulbarga', label: 'Gulbarga', digits: 6 },
-  { value: 'bangalore', label: 'Bangalore', digits: 5 },
+  { value: 'dharwad', label: 'Dharwad' },
+  { value: 'gulbarga', label: 'Gulbarga' },
+  { value: 'bangalore', label: 'Bangalore' },
+  { value: 'other', label: 'Other' },
 ];
 const statusOptions = ['pending', 'active', 'in-progress', 'closed', 'disposed'];
 const priorityOptions = ['low', 'medium', 'high', 'urgent'];
@@ -102,14 +103,8 @@ export default function CaseForm() {
       const { data } = await api.get('/clients', { params: { limit: 200 } });
       setClients(data.clients || data.data || data || []);
     } catch {
-      setClients([
-        { _id: 'c1', name: 'Rajesh Kumar', email: 'rajesh@email.com' },
-        { _id: 'c2', name: 'Mehta Enterprises', email: 'mehta@corp.com' },
-        { _id: 'c3', name: 'Priya Singh', email: 'priya@email.com' },
-        { _id: 'c4', name: 'Amit Sharma', email: 'amit@email.com' },
-        { _id: 'c5', name: 'ABC Corporation', email: 'abc@corp.com' },
-        { _id: 'c6', name: 'Vikram Mehta', email: 'vikram@email.com' },
-      ]);
+      setClients([]);
+      toast.error('Could not load clients. Please refresh and try again.');
     }
   };
 
@@ -118,12 +113,7 @@ export default function CaseForm() {
       const { data } = await api.get('/team');
       setTeamMembers(data.members || data.data || data || []);
     } catch {
-      setTeamMembers([
-        { _id: 't1', name: 'Adv. Sharma' },
-        { _id: 't2', name: 'Adv. Desai' },
-        { _id: 't3', name: 'Adv. Patel' },
-        { _id: 't4', name: 'Adv. Mehta' },
-      ]);
+      setTeamMembers([]);
     }
   };
 
@@ -191,15 +181,6 @@ export default function CaseForm() {
     if (!form.caseType) errs.caseType = 'Case type is required';
     if (!form.court) errs.court = 'Court is required';
     if (!form.client) errs.client = 'Client is required';
-    if (!form.juniorAdvocateId) errs.juniorAdvocateId = 'Junior Advocate is required';
-    if (!form.courtLocation) errs.courtLocation = 'Court location is required';
-    if (form.caseNumber && form.courtLocation) {
-      const digits = form.caseNumber.replace(/\D/g, '');
-      const loc = courtLocations.find(l => l.value === form.courtLocation);
-      if (loc && digits.length !== loc.digits) {
-        errs.caseNumber = `Case number must contain exactly ${loc.digits} digits (e.g. cl${'0'.repeat(loc.digits)})`;
-      }
-    }
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -222,7 +203,13 @@ export default function CaseForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validate()) return;
+    if (!validate()) {
+      const message = 'Please fill in the required fields highlighted below.';
+      setError(message);
+      toast.error(message);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
 
     setSaving(true);
     setError('');
@@ -249,8 +236,11 @@ export default function CaseForm() {
       }
       navigate('/cases');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to save case');
-      toast.error('Failed to save case');
+      const message = err.response?.data?.message
+        || err.response?.data?.errors?.[0]?.msg
+        || 'Failed to save case';
+      setError(message);
+      toast.error(message);
     } finally {
       setSaving(false);
     }
@@ -290,8 +280,8 @@ export default function CaseForm() {
                     value={form.caseNumber}
                     onChange={handleChange('caseNumber')}
                     error={!!errors.caseNumber}
-                    helperText={errors.caseNumber || 'Alphanumeric allowed (e.g. cl200412, cr123456)'}
-                    placeholder="e.g. cl200412, cr123456"
+                    helperText={errors.caseNumber || 'e.g. O.S. 123/2024 or cl200412'}
+                    placeholder="e.g. O.S. 123/2024"
                   />
                 </Grid>
                 <Grid item xs={12} sm={8}>
@@ -366,11 +356,11 @@ export default function CaseForm() {
                   <TextField
                     fullWidth
                     select
-                    label="Court Location *"
+                    label="Court Location"
                     value={form.courtLocation}
                     onChange={handleChange('courtLocation')}
                     error={!!errors.courtLocation}
-                    helperText={errors.courtLocation || 'Determines case number digit validation'}
+                    helperText={errors.courtLocation || 'Optional'}
                   >
                     {courtLocations.map((opt) => (
                       <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
@@ -399,6 +389,7 @@ export default function CaseForm() {
                   <Autocomplete
                     options={clients}
                     getOptionLabel={(option) => option.name || ''}
+                    noOptionsText="No clients found — add a client first"
                     value={clients.find((c) => c._id === form.client) || null}
                     onChange={(e, newValue) => {
                       setForm({ ...form, client: newValue?._id || null });
@@ -436,9 +427,9 @@ export default function CaseForm() {
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        label="Assigned Junior Advocate *"
+                        label="Assigned Junior Advocate"
                         error={!!errors.juniorAdvocateId}
-                        helperText={errors.juniorAdvocateId || 'Required — this advocate will be assigned to the case'}
+                        helperText={errors.juniorAdvocateId || 'Optional — the advocate handling the day-to-day work'}
                         placeholder="Select junior advocate"
                       />
                     )}
