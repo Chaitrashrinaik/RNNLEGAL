@@ -245,14 +245,17 @@ router.post(
       }));
 
       const subtotal = items.reduce((sum, item) => sum + item.total, 0);
-      const taxRate = req.body.taxRate || 0.18;
-      const tax = subtotal * taxRate;
-      const total = subtotal + tax;
+      const rawTaxRate = Number(req.body.taxRate);
+      const taxRate = Number.isFinite(rawTaxRate) && rawTaxRate > 0
+        ? (rawTaxRate > 1 ? rawTaxRate / 100 : rawTaxRate)
+        : 0.18;
+      const tax = Math.round(subtotal * taxRate * 100) / 100;
+      const total = Math.round((subtotal + tax) * 100) / 100;
 
       const invoice = await Invoice.create({
         invoiceNumber: generateInvoiceNumber(),
-        clientId: req.body.client,
-        caseId: req.body.case || null,
+        clientId: req.body.clientId || req.body.client,
+        caseId: req.body.caseId || req.body.case || null,
         items,
         subtotal,
         tax,
@@ -286,19 +289,35 @@ router.put('/:id', checkPermission('invoices', 'edit'), async (req, res) => {
 
     const updates = { ...req.body };
 
+    // The client sends `client`/`case`; the table stores `clientId`/`caseId`.
+    const clientId = updates.clientId || updates.client;
+    if (clientId) updates.clientId = clientId;
+    if (updates.caseId !== undefined || updates.case !== undefined) {
+      updates.caseId = updates.caseId || updates.case || null;
+    }
+    delete updates.client;
+    delete updates.case;
+
     if (updates.items && Array.isArray(updates.items)) {
       updates.items = updates.items.map((item) => ({
         ...item,
-        total: item.amount * item.quantity,
+        total: Number(item.amount || 0) * Number(item.quantity || 0),
       }));
       updates.subtotal = updates.items.reduce((sum, item) => sum + item.total, 0);
-      const taxRate = updates.taxRate || 0.18;
-      updates.tax = updates.subtotal * taxRate;
-      updates.total = updates.subtotal + updates.tax;
+      const rawTaxRate = Number(updates.taxRate);
+      // Accept either a fraction (0.18) or a percentage (18).
+      const taxRate = Number.isFinite(rawTaxRate) && rawTaxRate > 0
+        ? (rawTaxRate > 1 ? rawTaxRate / 100 : rawTaxRate)
+        : 0.18;
+      updates.tax = Math.round(updates.subtotal * taxRate * 100) / 100;
+      updates.total = Math.round((updates.subtotal + updates.tax) * 100) / 100;
     }
 
+    delete updates.taxRate;
     delete updates.invoiceNumber;
     delete updates.createdBy;
+    delete updates.id;
+    delete updates._id;
 
     await Invoice.updateById(req.params.id, updates);
 

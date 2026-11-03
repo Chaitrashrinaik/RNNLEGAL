@@ -271,7 +271,8 @@ router.post('/', checkPermission('documents', 'add'), uploadDocument, handleUplo
       return res.status(400).json({ success: false, message: 'No file uploaded' });
     }
 
-    const { title, case: caseId, category, tags, accessLevel } = req.body;
+    const { title, category, tags, accessLevel } = req.body;
+    const caseId = req.body.caseId || req.body.case || null;
 
     const isCloud = !!process.env.CLOUDINARY_CLOUD_NAME && !!process.env.CLOUDINARY_API_KEY && !!process.env.CLOUDINARY_API_SECRET;
     const cloudUrl = isCloud ? (req.file.path || req.file.url || null) : null;
@@ -306,7 +307,7 @@ router.post('/', checkPermission('documents', 'add'), uploadDocument, handleUplo
 
     const populated = (await populateDocs([await queryOne('SELECT * FROM documents WHERE id = ?', [document.id])]))[0];
     res.status(201).json({ success: true, data: populated });
-    logFromRequest(req, { action: 'document_uploaded', entity: 'document', entityId: document.id, caseId: req.body.caseId, module: 'Documents', details: `Document uploaded: ${req.file?.originalname}` });
+    logFromRequest(req, { action: 'document_uploaded', entity: 'document', entityId: document.id, caseId, module: 'Documents', details: `Document uploaded: ${req.file?.originalname}` });
   } catch (error) {
     console.error('Upload document error:', error.message);
     res.status(500).json({ success: false, message: 'Server error uploading document' });

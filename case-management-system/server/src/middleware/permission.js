@@ -21,11 +21,15 @@ const checkPermission = (feature, action) => {
       }
 
       const fullUser = await User.findById(req.user._id);
-      if (!fullUser || !fullUser.permissions) {
+      if (!fullUser) {
         return res.status(403).json({ success: false, message: `Access denied: ${feature} not configured` });
       }
 
-      const featurePerms = fullUser.permissions[feature];
+      // Users created before the permissions column existed have no stored
+      // permissions. Fall back to the role defaults instead of rejecting
+      // every request with "not configured".
+      const permissions = fullUser.permissions || User.DEFAULT_PERMISSIONS;
+      const featurePerms = permissions[feature];
       if (!featurePerms) {
         return res.status(403).json({ success: false, message: `Access denied: ${feature} not permitted` });
       }

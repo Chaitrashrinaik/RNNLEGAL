@@ -55,7 +55,9 @@ export default function Register() {
     <Box
       sx={{
         minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
-        background: 'linear-gradient(135deg, #0a0f18 0%, #111927 50%, #1a2332 100%)', p: 2,
+        background: (theme) => (theme.palette.mode === 'dark'
+          ? 'linear-gradient(135deg, #0a0f18 0%, #111927 50%, #1a2332 100%)'
+          : 'linear-gradient(135deg, #eef2f7 0%, #ffffff 60%, #f7f3ea 100%)'), p: 2,
       }}
     >
       <Box sx={{ width: '100%', maxWidth: 520 }}>
@@ -70,26 +72,27 @@ export default function Register() {
           >
             <ScaleIcon sx={{ color: 'primary.main', fontSize: 36 }} />
           </Box>
-          <Typography variant="h4" sx={{ fontWeight: 700, color: '#e8e8e8', mb: 0.5 }}>
+          <Typography variant="h4" sx={{ fontWeight: 700, color: 'text.primary', mb: 0.5 }}>
             CaseBench
           </Typography>
-          <Typography variant="body2" sx={{ color: '#9aa5b4' }}>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             Register as a Client
           </Typography>
         </Box>
 
         <Card
           sx={{
-            backgroundColor: '#1a2332',
-            border: '1px solid rgba(37, 51, 73, 0.5)',
+            backgroundColor: 'background.paper',
+            border: '1px solid',
+            borderColor: 'divider',
             borderRadius: 3,
           }}
         >
           <CardContent sx={{ p: 4 }}>
-            <Typography variant="h5" sx={{ fontWeight: 600, color: '#e8e8e8', mb: 0.5 }}>
+            <Typography variant="h5" sx={{ fontWeight: 600, color: 'text.primary', mb: 0.5 }}>
               Create Client Account
             </Typography>
-            <Typography variant="body2" sx={{ color: '#9aa5b4', mb: 3 }}>
+            <Typography variant="body2" sx={{ color: 'text.secondary', mb: 3 }}>
               Register to track your cases, documents & invoices
             </Typography>
 
@@ -115,7 +118,7 @@ export default function Register() {
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
-                          <IconButton onClick={() => setShowPassword(!showPassword)} edge="end" size="small" sx={{ color: '#9aa5b4' }}>
+                          <IconButton onClick={() => setShowPassword(!showPassword)} edge="end" size="small" sx={{ color: 'text.secondary' }}>
                             {showPassword ? <VisibilityOff /> : <Visibility />}
                           </IconButton>
                         </InputAdornment>
@@ -137,12 +140,12 @@ export default function Register() {
               <Button
                 fullWidth type="submit" variant="contained" size="large" disabled={loading}
                 sx={{
-                  mt: 3, py: 1.5, backgroundColor: '#c9a96e', color: '#1a2332', fontWeight: 600,
-                  fontSize: '0.95rem', '&:hover': { backgroundColor: '#b08d4a' },
+                  mt: 3, py: 1.5, backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 600,
+                  fontSize: '0.95rem', '&:hover': { backgroundColor: 'primary.dark' },
                   '&.Mui-disabled': { backgroundColor: 'rgba(201, 169, 110, 0.3)' },
                 }}
               >
-                {loading ? <CircularProgress size={24} sx={{ color: '#1a2332' }} /> : 'Create Account'}
+                {loading ? <CircularProgress size={24} sx={{ color: 'primary.contrastText' }} /> : 'Create Account'}
               </Button>
             </form>
           </CardContent>

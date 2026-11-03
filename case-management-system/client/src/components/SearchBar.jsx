@@ -12,7 +12,7 @@ export default function SearchBar({ value, onChange, placeholder = 'Search...', 
         minWidth: 250,
         '& .MuiOutlinedInput-root': {
           borderRadius: 2,
-          backgroundColor: 'rgba(15, 21, 32, 0.5)',
+          backgroundColor: (theme) => (theme.palette.mode === 'dark' ? 'rgba(15, 21, 32, 0.5)' : 'rgba(26, 35, 50, 0.04)'),
         },
         ...sx,
       }}

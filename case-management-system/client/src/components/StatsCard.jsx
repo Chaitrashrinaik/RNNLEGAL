@@ -7,8 +7,11 @@ export default function StatsCard({ icon, value, label, trend, trendValue, color
     <Card
       sx={{
         height: '100%',
-        background: 'linear-gradient(135deg, #1a2332 0%, #1e2d4a 100%)',
-        border: '1px solid rgba(37, 51, 73, 0.5)',
+        background: (theme) => (theme.palette.mode === 'dark'
+          ? 'linear-gradient(135deg, #1a2332 0%, #1e2d4a 100%)'
+          : 'linear-gradient(135deg, #ffffff 0%, #eef2f7 100%)'),
+        border: '1px solid',
+        borderColor: 'divider',
         transition: 'all 0.2s ease',
         '&:hover': {
           borderColor: 'rgba(201, 169, 110, 0.3)',

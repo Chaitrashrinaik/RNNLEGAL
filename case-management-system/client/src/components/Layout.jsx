@@ -133,7 +133,8 @@ export default function Layout() {
         display: 'flex',
         flexDirection: 'column',
         backgroundColor: 'sidebar.bg',
-        borderRight: '1px solid rgba(37, 51, 73, 0.5)',
+        borderRight: '1px solid',
+        borderColor: 'divider',
       }}
     >
       <Box
@@ -165,7 +166,7 @@ export default function Layout() {
               variant="subtitle1"
               sx={{
                 fontWeight: 700,
-                color: '#e8e8e8',
+                color: 'text.primary',
                 lineHeight: 1.2,
                 whiteSpace: 'nowrap',
               }}
@@ -191,7 +192,7 @@ export default function Layout() {
         )}
       </Box>
 
-      <Divider sx={{ borderColor: 'rgba(37, 51, 73, 0.5)' }} />
+      <Divider sx={{ borderColor: 'divider' }} />
 
       <List sx={{ flex: 1, px: 1.5, py: 1 }}>
         {allNavItems
@@ -220,7 +221,7 @@ export default function Layout() {
                     color: isActive ? 'sidebar.activeText' : 'sidebar.text',
                     '&:hover': {
                       backgroundColor: isActive ? 'sidebar.active' : 'sidebar.hover',
-                      color: isActive ? 'sidebar.activeText' : '#e8e8e8',
+                      color: isActive ? 'sidebar.activeText' : 'text.primary',
                     },
                     '& .MuiListItemIcon-root': {
                       color: isActive ? 'sidebar.activeText' : 'sidebar.text',
@@ -258,7 +259,7 @@ export default function Layout() {
         })}
       </List>
 
-      <Divider sx={{ borderColor: 'rgba(37, 51, 73, 0.5)' }} />
+      <Divider sx={{ borderColor: 'divider' }} />
       <Box sx={{ p: 2, textAlign: collapsed ? 'center' : 'left' }}>
         {!collapsed ? (
           <Typography variant="caption" sx={{ color: 'sidebar.text', display: 'block' }}>
@@ -316,7 +317,8 @@ export default function Layout() {
           elevation={0}
           sx={{
             backgroundColor: 'background.paper',
-            borderBottom: '1px solid rgba(37, 51, 73, 0.5)',
+            borderBottom: '1px solid',
+            borderColor: 'divider',
             width: '100%',
           }}
         >
@@ -343,7 +345,7 @@ export default function Layout() {
                 flex: 1,
                 display: { xs: 'none', sm: 'flex' },
                 '& .MuiOutlinedInput-root': {
-                  backgroundColor: 'rgba(15, 21, 32, 0.5)',
+                  backgroundColor: (theme) => (theme.palette.mode === 'dark' ? 'rgba(15, 21, 32, 0.5)' : 'rgba(26, 35, 50, 0.04)'),
                   borderRadius: 2,
                 },
               }}
@@ -417,7 +419,8 @@ export default function Layout() {
                     mt: 1,
                     minWidth: 180,
                     borderRadius: 2,
-                    border: '1px solid rgba(37, 51, 73, 0.5)',
+                    border: '1px solid',
+                    borderColor: 'divider',
                   },
                 }}
               >

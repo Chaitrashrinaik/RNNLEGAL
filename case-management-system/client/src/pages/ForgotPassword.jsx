@@ -74,22 +74,22 @@ export default function ForgotPassword() {
   };
 
   return (
-    <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #0a0f18 0%, #111927 50%, #1a2332 100%)', p: 2 }}>
+    <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: (theme) => (theme.palette.mode === 'dark' ? 'linear-gradient(135deg, #0a0f18 0%, #111927 50%, #1a2332 100%)' : 'linear-gradient(135deg, #eef2f7 0%, #ffffff 60%, #f7f3ea 100%)'), p: 2 }}>
       <Box sx={{ width: '100%', maxWidth: 440 }}>
         <Box sx={{ textAlign: 'center', mb: 4 }}>
           <Box sx={{ width: 64, height: 64, borderRadius: 2, backgroundColor: 'rgba(201, 169, 110, 0.1)', border: '1px solid rgba(201, 169, 110, 0.2)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
             <ScaleIcon sx={{ color: 'primary.main', fontSize: 36 }} />
           </Box>
-          <Typography variant="h4" sx={{ fontWeight: 700, color: '#e8e8e8', mb: 0.5 }}>CaseBench</Typography>
-          <Typography variant="body2" sx={{ color: '#9aa5b4' }}>Legal Case Management System</Typography>
+          <Typography variant="h4" sx={{ fontWeight: 700, color: 'text.primary', mb: 0.5 }}>CaseBench</Typography>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>Legal Case Management System</Typography>
         </Box>
 
-        <Card sx={{ backgroundColor: '#1a2332', border: '1px solid rgba(37, 51, 73, 0.5)', borderRadius: 3 }}>
+        <Card sx={{ backgroundColor: 'background.paper', border: '1px solid', borderColor: 'divider', borderRadius: 3 }}>
           <CardContent sx={{ p: 4 }}>
-            <Typography variant="h5" sx={{ fontWeight: 600, color: '#e8e8e8', mb: 0.5 }}>Forgot Password</Typography>
-            <Typography variant="body2" sx={{ color: '#9aa5b4', mb: 3 }}>Reset your password using OTP</Typography>
+            <Typography variant="h5" sx={{ fontWeight: 600, color: 'text.primary', mb: 0.5 }}>Forgot Password</Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary', mb: 3 }}>Reset your password using OTP</Typography>
 
-            <Stepper activeStep={activeStep} sx={{ mb: 3, '& .MuiStepLabel-label': { color: '#9aa5b4', fontSize: '0.75rem' }, '& .MuiStepLabel-label.Mui-active': { color: '#c9a96e' }, '& .MuiStepLabel-label.Mui-completed': { color: '#4caf50' }, '& .MuiStepIcon-root': { color: 'rgba(255,255,255,0.15)' }, '& .MuiStepIcon-root.Mui-active': { color: '#c9a96e' }, '& .MuiStepIcon-root.Mui-completed': { color: '#4caf50' } }}>
+            <Stepper activeStep={activeStep} sx={{ mb: 3, '& .MuiStepLabel-label': { color: 'text.secondary', fontSize: '0.75rem' }, '& .MuiStepLabel-label.Mui-active': { color: 'primary.main' }, '& .MuiStepLabel-label.Mui-completed': { color: '#4caf50' }, '& .MuiStepIcon-root': { color: (theme) => (theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.15)' : 'rgba(26,35,50,0.15)') }, '& .MuiStepIcon-root.Mui-active': { color: 'primary.main' }, '& .MuiStepIcon-root.Mui-completed': { color: '#4caf50' } }}>
               {steps.map(label => <Step key={label}><StepLabel>{label}</StepLabel></Step>)}
             </Stepper>
 
@@ -102,8 +102,8 @@ export default function ForgotPassword() {
                 <TextField fullWidth label="Email Address" type="email" placeholder="Enter your registered email"
                   value={email} onChange={e => setEmail(e.target.value)} sx={{ mb: 3 }} autoComplete="email" />
                 <Button fullWidth type="submit" variant="contained" size="large" disabled={loading}
-                  sx={{ py: 1.5, backgroundColor: '#c9a96e', color: '#1a2332', fontWeight: 600, '&:hover': { backgroundColor: '#b08d4a' }, '&.Mui-disabled': { backgroundColor: 'rgba(201, 169, 110, 0.3)' } }}>
-                  {loading ? <CircularProgress size={24} sx={{ color: '#1a2332' }} /> : 'Send OTP'}
+                  sx={{ py: 1.5, backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 600, '&:hover': { backgroundColor: 'primary.dark' }, '&.Mui-disabled': { backgroundColor: 'rgba(201, 169, 110, 0.3)' } }}>
+                  {loading ? <CircularProgress size={24} sx={{ color: 'primary.contrastText' }} /> : 'Send OTP'}
                 </Button>
               </form>
             )}
@@ -113,8 +113,8 @@ export default function ForgotPassword() {
                 <TextField fullWidth label="Enter OTP" placeholder="6-digit OTP"
                   value={otp} onChange={e => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))} sx={{ mb: 3 }} />
                 <Button fullWidth type="submit" variant="contained" size="large" disabled={loading}
-                  sx={{ py: 1.5, backgroundColor: '#c9a96e', color: '#1a2332', fontWeight: 600, '&:hover': { backgroundColor: '#b08d4a' } }}>
-                  {loading ? <CircularProgress size={24} sx={{ color: '#1a2332' }} /> : 'Verify OTP'}
+                  sx={{ py: 1.5, backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 600, '&:hover': { backgroundColor: 'primary.dark' } }}>
+                  {loading ? <CircularProgress size={24} sx={{ color: 'primary.contrastText' }} /> : 'Verify OTP'}
                 </Button>
               </form>
             )}
@@ -126,8 +126,8 @@ export default function ForgotPassword() {
                 <TextField fullWidth label="Confirm Password" type="password" placeholder="Re-enter password"
                   value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} sx={{ mb: 3 }} />
                 <Button fullWidth type="submit" variant="contained" size="large" disabled={loading}
-                  sx={{ py: 1.5, backgroundColor: '#c9a96e', color: '#1a2332', fontWeight: 600, '&:hover': { backgroundColor: '#b08d4a' }, '&.Mui-disabled': { backgroundColor: 'rgba(201, 169, 110, 0.3)' } }}>
-                  {loading ? <CircularProgress size={24} sx={{ color: '#1a2332' }} /> : 'Reset Password'}
+                  sx={{ py: 1.5, backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 600, '&:hover': { backgroundColor: 'primary.dark' }, '&.Mui-disabled': { backgroundColor: 'rgba(201, 169, 110, 0.3)' } }}>
+                  {loading ? <CircularProgress size={24} sx={{ color: 'primary.contrastText' }} /> : 'Reset Password'}
                 </Button>
               </form>
             )}

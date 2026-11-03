@@ -46,6 +46,7 @@ async function createTables() {
       avatar VARCHAR(500), firmName VARCHAR(255) DEFAULT '', company VARCHAR(255), panNumber VARCHAR(20),
       googleId VARCHAR(255), isActive TINYINT DEFAULT 1,
       lastLogin VARCHAR(50), passwordResetToken VARCHAR(255), passwordResetExpires VARCHAR(50),
+      permissions TEXT,
       createdAt VARCHAR(50), updatedAt VARCHAR(50)
     )
   `);
@@ -391,6 +392,7 @@ async function createTables() {
     "ALTER TABLE cases ADD COLUMN caseOutcome VARCHAR(50)",
     "ALTER TABLE users ADD COLUMN barCouncilNumber VARCHAR(100)",
     "ALTER TABLE users ADD COLUMN advocateId VARCHAR(50)",
+    "ALTER TABLE users ADD COLUMN permissions TEXT",
     "ALTER TABLE hearings ADD COLUMN attendedBy VARCHAR(36)",
     "ALTER TABLE hearings ADD COLUMN purpose TEXT",
     "ALTER TABLE hearings ADD COLUMN argumentsPresented TEXT",

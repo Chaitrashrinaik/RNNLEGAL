@@ -1,42 +1,47 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
+import { useTheme } from '@mui/material/styles';
 import { Toaster } from 'react-hot-toast';
-import theme from './theme/theme';
+import { ThemeModeProvider } from './context/ThemeContext';
 import App from './App';
 import './App.css';
 
+function ThemedToaster() {
+  const theme = useTheme();
+  return (
+    <Toaster
+      position="top-right"
+      toastOptions={{
+        duration: 3000,
+        style: {
+          background: theme.palette.background.paper,
+          color: theme.palette.text.primary,
+          border: `1px solid ${theme.palette.divider}`,
+          borderRadius: 10,
+          fontSize: '0.875rem',
+        },
+        success: {
+          iconTheme: {
+            primary: theme.palette.primary.main,
+            secondary: theme.palette.background.paper,
+          },
+        },
+        error: {
+          iconTheme: {
+            primary: theme.palette.error.main,
+            secondary: theme.palette.background.paper,
+          },
+        },
+      }}
+    />
+  );
+}
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
+    <ThemeModeProvider>
       <App />
-      <Toaster
-        position="top-right"
-        toastOptions={{
-          duration: 3000,
-          style: {
-            background: '#1a2332',
-            color: '#e8e8e8',
-            border: '1px solid rgba(37, 51, 73, 0.5)',
-            borderRadius: 10,
-            fontSize: '0.875rem',
-          },
-          success: {
-            iconTheme: {
-              primary: '#c9a96e',
-              secondary: '#1a2332',
-            },
-          },
-          error: {
-            iconTheme: {
-              primary: '#f44336',
-              secondary: '#1a2332',
-            },
-          },
-        }}
-      />
-    </ThemeProvider>
+      <ThemedToaster />
+    </ThemeModeProvider>
   </React.StrictMode>
 );

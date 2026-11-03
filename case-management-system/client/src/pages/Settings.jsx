@@ -1,13 +1,17 @@
 import { useState, useRef, useEffect } from 'react';
 import {
-  Box, Typography, Card, CardContent, TextField, Button, Divider, Switch, FormControlLabel, Avatar, Tabs, Tab, CircularProgress } from '@mui/material';
+  Box, Typography, Card, CardContent, TextField, Button, Divider, Switch, FormControlLabel, Avatar, Tabs, Tab, CircularProgress, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import Grid from '../components/Grid';
 import SaveIcon from '@mui/icons-material/Save';
 import PersonIcon from '@mui/icons-material/Person';
 import FirmIcon from '@mui/icons-material/Business';
 import NotifIcon from '@mui/icons-material/Notifications';
 import CameraIcon from '@mui/icons-material/CameraAlt';
+import PaletteIcon from '@mui/icons-material/Palette';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
 import { useAuth } from '../context/AuthContext';
+import { useThemeMode } from '../context/ThemeContext';
 import api from '../api/axios';
 
 const API_BASE = import.meta.env.VITE_API_URL || '';
@@ -24,6 +28,7 @@ function TabPanel({ children, value, index }) {
 
 export default function Settings() {
   const { user, updateProfile, setUser } = useAuth();
+  const { mode, setMode } = useThemeMode();
   const [tab, setTab] = useState(0);
   const [saving, setSaving] = useState(false);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
@@ -89,19 +94,31 @@ export default function Settings() {
   };
 
   const handleSavePassword = async () => {
+    if (!password.current || !password.newPass || !password.confirm) {
+      toast.error('Please fill in all password fields');
+      return;
+    }
+    if (password.newPass.length < 6) {
+      toast.error('New password must be at least 6 characters');
+      return;
+    }
     if (password.newPass !== password.confirm) {
       toast.error('Passwords do not match');
       return;
     }
     setSaving(true);
     try {
-      await api.put('/auth/change-password', { currentPassword: password.current, newPassword: password.newPass });
-      toast.success('Password changed');
+      await api.post('/auth/change-password', { currentPassword: password.current, newPassword: password.newPass });
+      toast.success('Password changed successfully');
       setPassword({ current: '', newPass: '', confirm: '' });
-    } catch {
-      toast.error('Failed to change password');
+    } catch (err) {
+      const message = err.response?.data?.errors?.[0]?.msg
+        || err.response?.data?.message
+        || 'Failed to change password';
+      toast.error(message);
+    } finally {
+      setSaving(false);
     }
-    setSaving(false);
   };
 
   const handleAvatarClick = () => {
@@ -160,7 +177,8 @@ export default function Settings() {
         onChange={(e, v) => setTab(v)}
         sx={{
           mb: 3,
-          borderBottom: '1px solid rgba(37, 51, 73, 0.5)',
+          borderBottom: '1px solid',
+          borderColor: 'divider',
           '& .MuiTab-root': { color: 'text.secondary' },
           '& .Mui-selected': { color: 'primary.main !important' },
         }}
@@ -169,6 +187,7 @@ export default function Settings() {
         <Tab icon={<FirmIcon />} iconPosition="start" label="Firm" />
         <Tab icon={<NotifIcon />} iconPosition="start" label="Notifications" />
         <Tab label="Security" />
+        <Tab icon={<PaletteIcon />} iconPosition="start" label="Appearance" />
       </Tabs>
 
       <TabPanel value={tab} index={0}>
@@ -203,7 +222,7 @@ export default function Settings() {
                     width: 28, height: 28, borderRadius: '50%',
                     backgroundColor: 'primary.main',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    cursor: 'pointer', border: '2px solid #1a2332',
+                    cursor: 'pointer', border: '2px solid', borderColor: 'background.paper',
                     '&:hover': { backgroundColor: 'primary.dark' },
                   }}
                 >
@@ -341,6 +360,49 @@ export default function Settings() {
               <Button variant="contained" onClick={handleSavePassword} disabled={saving || !password.current || !password.newPass}>
                 Update Password
               </Button>
+            </Box>
+          </CardContent>
+        </Card>
+      </TabPanel>
+
+      <TabPanel value={tab} index={4}>
+        <Card>
+          <CardContent>
+            <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>Appearance</Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary', mb: 3 }}>
+              Choose how CaseBench looks. Your preference is saved on this device.
+            </Typography>
+            <ToggleButtonGroup
+              exclusive
+              value={mode}
+              onChange={(event, value) => { if (value) setMode(value); }}
+              aria-label="Theme mode"
+            >
+              <ToggleButton value="light" aria-label="Light mode" sx={{ px: 4, py: 1.5, gap: 1 }}>
+                <LightModeIcon fontSize="small" />
+                Light
+              </ToggleButton>
+              <ToggleButton value="dark" aria-label="Dark mode" sx={{ px: 4, py: 1.5, gap: 1 }}>
+                <DarkModeIcon fontSize="small" />
+                Dark
+              </ToggleButton>
+            </ToggleButtonGroup>
+            <Box
+              sx={{
+                mt: 3,
+                p: 2,
+                maxWidth: 420,
+                borderRadius: 2,
+                border: '1px solid',
+                borderColor: 'divider',
+                backgroundColor: 'background.default',
+              }}
+            >
+              <Typography variant="body2" sx={{ fontWeight: 600, mb: 0.5 }}>Preview</Typography>
+              <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1.5 }}>
+                This is how content looks in {mode === 'dark' ? 'Dark' : 'Light'} mode.
+              </Typography>
+              <Button variant="contained" size="small">Primary action</Button>
             </Box>
           </CardContent>
         </Card>

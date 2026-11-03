@@ -42,7 +42,7 @@ module.exports = {
   },
 
   async updateById(id, updates) {
-    const allowed = ['items', 'subtotal', 'tax', 'total', 'status', 'dueDate', 'paidDate', 'paidAmount', 'paymentMethod', 'notes'];
+    const allowed = ['clientId', 'caseId', 'items', 'subtotal', 'tax', 'total', 'status', 'dueDate', 'paidDate', 'paidAmount', 'paymentMethod', 'notes'];
     const sets = [];
     const vals = [];
     for (const [k, v] of Object.entries(updates)) {

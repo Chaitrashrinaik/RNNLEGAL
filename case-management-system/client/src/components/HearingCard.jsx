@@ -14,7 +14,8 @@ export default function HearingCard({ hearing, onClick }) {
       onClick={onClick}
       sx={{
         cursor: 'pointer',
-        border: isToday ? '1px solid rgba(201, 169, 110, 0.4)' : '1px solid rgba(37, 51, 73, 0.5)',
+        border: isToday ? '1px solid rgba(201, 169, 110, 0.4)' : '1px solid',
+        borderColor: isToday ? 'rgba(201, 169, 110, 0.4)' : 'divider',
         backgroundColor: isToday ? 'rgba(201, 169, 110, 0.05)' : 'background.paper',
         transition: 'all 0.2s ease',
         opacity: isPast ? 0.6 : 1,

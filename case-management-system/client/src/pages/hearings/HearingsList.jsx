@@ -14,6 +14,7 @@ import Cancel from '@mui/icons-material/Cancel';
 import Warning from '@mui/icons-material/Warning';
 import Refresh from '@mui/icons-material/Refresh';
 import Close from '@mui/icons-material/Close';
+import AccountBalance from '@mui/icons-material/AccountBalance';
 import { format, parseISO } from 'date-fns';
 import api from '../../api/axios';
 import { useAuth } from '../../context/AuthContext';
@@ -28,6 +29,20 @@ const STATUS_OPTIONS = [
 ];
 const STATUS_COLORS = { scheduled: '#2196f3', completed: '#4caf50', cancelled: '#9e9e9e', adjourned: '#ff9800' };
 
+const getCourtDetails = (caseItem) => ({
+  courtName: caseItem?.courtName || caseItem?.court || '',
+  courtLocation: caseItem?.courtLocation || caseItem?.location || '',
+  courtNumber: caseItem?.courtNumber || '',
+  judgeName: caseItem?.judgeName || '',
+});
+
+const CourtDetailItem = ({ label, value }) => (
+  <Box sx={{ minWidth: 0 }}>
+    <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block' }}>{label}</Typography>
+    <Typography variant="body2" sx={{ fontWeight: 600, wordBreak: 'break-word' }}>{value || 'Not available'}</Typography>
+  </Box>
+);
+
 const HearingFormDialog = ({ open, onClose, onSave, hearing, cases }) => {
   const [form, setForm] = useState({ caseId: '', hearingDate: '', court: '', courtName: '', courtHall: '', judgeName: '', notes: '' });
   const [saving, setSaving] = useState(false);
@@ -35,6 +50,23 @@ const HearingFormDialog = ({ open, onClose, onSave, hearing, cases }) => {
     if (hearing) setForm({ caseId: hearing.caseId || '', hearingDate: hearing.hearingDate ? hearing.hearingDate.slice(0, 16) : '', court: hearing.court || '', courtName: hearing.courtName || '', courtHall: hearing.courtHall || '', judgeName: hearing.judgeName || '', notes: hearing.notes || '' });
     else setForm({ caseId: '', hearingDate: '', court: '', courtName: '', courtHall: '', judgeName: '', notes: '' });
   }, [hearing, open]);
+
+  const selectedCase = (cases || []).find((c) => (c.id || c._id) === form.caseId);
+  const selectedCourtDetails = getCourtDetails(selectedCase);
+
+  const handleCaseChange = (caseId) => {
+    const caseItem = (cases || []).find((c) => (c.id || c._id) === caseId);
+    const details = getCourtDetails(caseItem);
+    setForm((prev) => ({
+      ...prev,
+      caseId,
+      court: details.courtName || prev.court,
+      courtName: details.courtName || prev.courtName,
+      courtHall: details.courtNumber || prev.courtHall,
+      judgeName: details.judgeName || prev.judgeName,
+    }));
+  };
+
   const handleSubmit = async () => {
     if (!form.caseId || !form.hearingDate) return;
     setSaving(true);
@@ -49,9 +81,24 @@ const HearingFormDialog = ({ open, onClose, onSave, hearing, cases }) => {
       <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between' }}>{hearing ? 'Edit Hearing' : 'Schedule Hearing'}<IconButton onClick={onClose} size="small"><Close /></IconButton></DialogTitle>
       <DialogContent dividers sx={{ pt: 3 }}>
         <Grid container spacing={2}>
-          <Grid size={12}><TextField select fullWidth label="Case" value={form.caseId} onChange={e => setForm({ ...form, caseId: e.target.value })} size="small" required>
+          <Grid size={12}><TextField select fullWidth label="Case" value={form.caseId} onChange={e => handleCaseChange(e.target.value)} size="small" required>
             {(cases || []).map(c => <MenuItem key={c.id || c._id} value={c.id || c._id}>{c.caseNumber} - {c.caseTitle}</MenuItem>)}
           </TextField></Grid>
+          {form.caseId && (
+            <Grid size={12}>
+              <Box sx={{ p: 1.5, borderRadius: 2, border: '1px solid', borderColor: 'divider', backgroundColor: 'action.hover' }}>
+                <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: 0.4 }}>
+                  Court Details from Case
+                </Typography>
+                <Grid container spacing={1.5} sx={{ mt: 0.25 }}>
+                  <Grid item xs={12} sm={6}><CourtDetailItem label="Court Name" value={selectedCourtDetails.courtName} /></Grid>
+                  <Grid item xs={12} sm={6}><CourtDetailItem label="Court Location" value={selectedCourtDetails.courtLocation} /></Grid>
+                  <Grid item xs={12} sm={6}><CourtDetailItem label="Court Number" value={selectedCourtDetails.courtNumber} /></Grid>
+                  <Grid item xs={12} sm={6}><CourtDetailItem label="Judge Name" value={selectedCourtDetails.judgeName} /></Grid>
+                </Grid>
+              </Box>
+            </Grid>
+          )}
           <Grid item xs={12} sm={6}><TextField fullWidth label="Hearing Date" type="datetime-local" value={form.hearingDate} onChange={e => setForm({ ...form, hearingDate: e.target.value })} size="small" required InputLabelProps={{ shrink: true }} /></Grid>
           <Grid item xs={12} sm={6}><TextField fullWidth label="Court" value={form.court} onChange={e => setForm({ ...form, court: e.target.value })} size="small" /></Grid>
           <Grid item xs={12} sm={6}><TextField fullWidth label="Court Name" value={form.courtName} onChange={e => setForm({ ...form, courtName: e.target.value })} size="small" /></Grid>
@@ -101,6 +148,7 @@ export default function HearingsList() {
   const [total, setTotal] = useState(0);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const [selectedCaseId, setSelectedCaseId] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [outcomeDialogOpen, setOutcomeDialogOpen] = useState(false);
   const [editingHearing, setEditingHearing] = useState(null);
@@ -134,12 +182,48 @@ export default function HearingsList() {
     switch (s) { case 'completed': return <CheckCircle sx={{ fontSize: 16, color: '#4caf50' }} />; case 'cancelled': return <Cancel sx={{ fontSize: 16, color: '#9e9e9e' }} />; case 'adjourned': return <Warning sx={{ fontSize: 16, color: '#ff9800' }} />; default: return <AccessTime sx={{ fontSize: 16, color: '#2196f3' }} />; }
   };
 
+  const selectedCase = cases.find((c) => (c.id || c._id) === selectedCaseId);
+  const selectedCourtDetails = getCourtDetails(selectedCase);
+
   return (
     <Box sx={{ p: { xs: 2, md: 3 }, maxWidth: 1400, mx: 'auto' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}>
         <Box><Typography variant="h4" fontWeight={700}>Hearing Management</Typography><Typography variant="body2" color="text.secondary">Schedule and manage court hearings</Typography></Box>
         {hasPermission('cases', 'add') && <Button variant="contained" startIcon={<Add />} onClick={() => { setEditingHearing(null); setDialogOpen(true); }}>Schedule Hearing</Button>}
       </Box>
+      <Card sx={{ mb: 3 }}>
+        <CardContent>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+            <AccountBalance sx={{ color: 'primary.main', fontSize: 20 }} />
+            <Typography variant="h6" fontWeight={600}>Court Details</Typography>
+          </Box>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item xs={12} md={6}>
+              <TextField select fullWidth size="small" label="Select Case" value={selectedCaseId} onChange={e => setSelectedCaseId(e.target.value)}>
+                <MenuItem value="">Select a case to view court details</MenuItem>
+                {cases.map(c => <MenuItem key={c.id || c._id} value={c.id || c._id}>{c.caseNumber} - {c.caseTitle}</MenuItem>)}
+              </TextField>
+            </Grid>
+            {!selectedCase && (
+              <Grid item xs={12} md={6}>
+                <Typography variant="body2" color="text.secondary">
+                  Choose a case above to see its court name, location, court number and judge.
+                </Typography>
+              </Grid>
+            )}
+          </Grid>
+          {selectedCase && (
+            <Box sx={{ mt: 2, p: 2, borderRadius: 2, border: '1px solid', borderColor: 'divider', backgroundColor: 'background.default' }}>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6} md={3}><CourtDetailItem label="Court Name" value={selectedCourtDetails.courtName} /></Grid>
+                <Grid item xs={12} sm={6} md={3}><CourtDetailItem label="Court Location" value={selectedCourtDetails.courtLocation} /></Grid>
+                <Grid item xs={12} sm={6} md={3}><CourtDetailItem label="Court Number" value={selectedCourtDetails.courtNumber} /></Grid>
+                <Grid item xs={12} sm={6} md={3}><CourtDetailItem label="Judge Name" value={selectedCourtDetails.judgeName} /></Grid>
+              </Grid>
+            </Box>
+          )}
+        </CardContent>
+      </Card>
       <Card sx={{ mb: 3 }}><CardContent>
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} sm={6} md={4}><TextField fullWidth size="small" placeholder="Search hearings..." value={search} onChange={e => setSearch(e.target.value)} InputProps={{ startAdornment: <InputAdornment position="start"><Search /></InputAdornment> }} /></Grid>
@@ -162,6 +246,7 @@ export default function HearingsList() {
                 <TableCell><Chip icon={getStatusIcon(h.status)} label={h.status} size="small" sx={{ bgcolor: (STATUS_COLORS[h.status] || '#9e9e9e') + '20', color: STATUS_COLORS[h.status] || '#9e9e9e', fontWeight: 600, textTransform: 'capitalize' }} /></TableCell>
                 <TableCell align="right" onClick={e => e.stopPropagation()}>
                   <Stack direction="row" spacing={0.5} justifyContent="flex-end">
+                    {h.caseId && <Tooltip title="View Court Details"><IconButton size="small" onClick={() => setSelectedCaseId(h.caseId)}><AccountBalance fontSize="small" /></IconButton></Tooltip>}
                     {h.status === 'scheduled' && hasPermission('cases', 'edit') && <Tooltip title="Record Outcome"><IconButton size="small" color="success" onClick={() => { setSelectedHearing(h); setOutcomeDialogOpen(true); }}><CheckCircle /></IconButton></Tooltip>}
                     {hasPermission('cases', 'edit') && <Tooltip title="Edit"><IconButton size="small" onClick={() => { setEditingHearing(h); setDialogOpen(true); }}><Edit /></IconButton></Tooltip>}
                     {hasPermission('cases', 'delete') && <Tooltip title="Delete"><IconButton size="small" color="error" onClick={() => handleDelete(h.id || h._id)}><Delete /></IconButton></Tooltip>}

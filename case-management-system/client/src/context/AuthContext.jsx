@@ -3,6 +3,19 @@ import api from '../api/axios';
 
 const AuthContext = createContext(null);
 
+// Mirrors the server's DEFAULT_PERMISSIONS. Used only as a fallback for users
+// whose permissions were never stored (pre-migration accounts).
+const DEFAULT_PERMISSIONS = {
+  dashboard: { view: true, add: false, edit: false, delete: false },
+  cases: { view: true, add: true, edit: true, delete: false },
+  clients: { view: true, add: true, edit: true, delete: false },
+  documents: { view: true, add: true, edit: true, delete: false },
+  invoices: { view: true, add: true, edit: true, delete: false },
+  calendar: { view: true, add: true, edit: true, delete: false },
+  notifications: { view: true, add: false, edit: false, delete: false },
+  settings: { view: true, add: false, edit: true, delete: false },
+};
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -107,7 +120,10 @@ export function AuthProvider({ children }) {
       return ['view', 'list', 'read', 'get'].includes(action);
     }
     if (!user.permissions) {
-      return ['admin', 'advocate', 'staff'].includes(user.role);
+      if (!['admin', 'advocate', 'staff'].includes(user.role)) return false;
+      const defaults = DEFAULT_PERMISSIONS[feature];
+      if (!defaults) return false;
+      return !!defaults[action];
     }
     const featurePerms = user.permissions[feature];
     if (!featurePerms) return false;

@@ -35,7 +35,7 @@ export default function ConfirmDialog({
       PaperProps={{
         sx: {
           borderRadius: 3,
-          backgroundColor: '#1a2332',
+          backgroundColor: 'background.paper',
         },
       }}
     >

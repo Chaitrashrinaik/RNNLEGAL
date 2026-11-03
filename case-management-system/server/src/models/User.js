@@ -6,21 +6,25 @@ const sanitize = (u) => {
   if (!u) return null;
   const { password, passwordResetToken, passwordResetExpires, ...s } = u;
   s._id = s.id;
-  if (s.permissions && typeof s.permissions === 'string') {
-    try { s.permissions = JSON.parse(s.permissions); } catch { s.permissions = null; }
+  let permissions = s.permissions;
+  if (typeof permissions === 'string') {
+    try { permissions = JSON.parse(permissions); } catch { permissions = null; }
   }
+  s.permissions = permissions && typeof permissions === 'object'
+    ? permissions
+    : JSON.parse(JSON.stringify(DEFAULT_PERMISSIONS));
   return s;
 };
 
 const DEFAULT_PERMISSIONS = {
   dashboard: { view: true, add: false, edit: false, delete: false },
   cases: { view: true, add: true, edit: true, delete: false },
-  clients: { view: true, add: false, edit: false, delete: false },
-  documents: { view: true, add: true, edit: false, delete: false },
-  invoices: { view: true, add: false, edit: false, delete: false },
+  clients: { view: true, add: true, edit: true, delete: false },
+  documents: { view: true, add: true, edit: true, delete: false },
+  invoices: { view: true, add: true, edit: true, delete: false },
   calendar: { view: true, add: true, edit: true, delete: false },
   notifications: { view: true, add: false, edit: false, delete: false },
-  settings: { view: false, add: false, edit: false, delete: false },
+  settings: { view: true, add: false, edit: true, delete: false },
 };
 
 module.exports = {
@@ -53,9 +57,10 @@ module.exports = {
     const now = new Date().toISOString();
     const hash = await bcrypt.hash(data.password, 12);
     const advocateId = data.advocateId || (data.role !== 'client' ? await this.generateAdvocateId() : null);
+    const permissions = data.permissions || DEFAULT_PERMISSIONS;
     await getDb().execute(
-      'INSERT INTO users (id,name,email,password,role,phone,avatar,firmName,company,panNumber,googleId,advocateId,barCouncilNumber,createdAt,updatedAt) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-      [id, data.name, data.email.toLowerCase(), hash, data.role || 'staff', data.phone || null, data.avatar || null, data.firmName || '', data.company || null, data.panNumber || null, data.googleId || null, advocateId || null, data.barCouncilNumber || null, now, now]
+      'INSERT INTO users (id,name,email,password,role,phone,avatar,firmName,company,panNumber,googleId,advocateId,barCouncilNumber,permissions,createdAt,updatedAt) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+      [id, data.name, data.email.toLowerCase(), hash, data.role || 'staff', data.phone || null, data.avatar || null, data.firmName || '', data.company || null, data.panNumber || null, data.googleId || null, advocateId || null, data.barCouncilNumber || null, JSON.stringify(permissions), now, now]
     );
     saveDb();
     return this.findById(id);

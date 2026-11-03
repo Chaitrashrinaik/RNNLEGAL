@@ -57,16 +57,24 @@ export default function InvoiceForm() {
       setForm({
         clientId: inv.client?._id || inv.clientId || '',
         caseId: inv.case?._id || inv.caseId || '',
-        items: inv.items?.length ? inv.items : [{ ...emptyItem }],
+        items: Array.isArray(inv.items) && inv.items.length
+          ? inv.items.map((item) => ({
+              description: item.description || '',
+              quantity: Number(item.quantity) || 1,
+              rate: Number(item.amount ?? item.rate ?? 0),
+            }))
+          : [{ ...emptyItem }],
         dueDate: inv.dueDate ? new Date(inv.dueDate) : null,
         notes: inv.notes || '',
-        taxRate: inv.taxRate || 18,
+        taxRate: typeof inv.taxRate === 'number'
+          ? inv.taxRate
+          : (inv.subtotal ? Math.round(((inv.tax || 0) / inv.subtotal) * 100) : 18),
       });
     } catch { toast.error('Failed to load invoice'); }
     finally { setLoading(false); }
   };
 
-  const subtotal = form.items.reduce((sum, item) => sum + (item.quantity * item.rate), 0);
+  const subtotal = form.items.reduce((sum, item) => sum + (Number(item.quantity) * Number(item.rate)), 0);
   const tax = subtotal * (form.taxRate / 100);
   const total = subtotal + tax;
 
@@ -86,19 +94,20 @@ export default function InvoiceForm() {
     e.preventDefault();
     if (!form.clientId) { setError('Please select a client'); return; }
     if (!form.items.length || !form.items[0].description) { setError('Please add at least one line item'); return; }
+    if (!form.dueDate) { setError('Please select a due date'); return; }
     setSaving(true);
     setError('');
     try {
       const payload = {
         client: form.clientId,
-        case: form.caseId || undefined,
+        case: form.caseId || null,
         items: form.items.map((item) => ({
           description: item.description,
-          amount: item.rate,
-          quantity: item.quantity,
+          amount: Number(item.rate) || 0,
+          quantity: Number(item.quantity) || 1,
         })),
-        dueDate: form.dueDate?.toISOString(),
-        taxRate: (form.taxRate || 18) / 100,
+        dueDate: form.dueDate.toISOString(),
+        taxRate: (Number(form.taxRate) || 18) / 100,
         notes: form.notes,
       };
       if (isEdit) {
@@ -108,9 +117,9 @@ export default function InvoiceForm() {
         await api.post('/invoices', payload);
         toast.success('Invoice created');
       }
-      navigate('/invoices');
+      navigate(isEdit ? `/invoices/${id}` : '/invoices');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to save invoice');
+      setError(err.response?.data?.message || err.response?.data?.errors?.[0]?.msg || 'Failed to save invoice');
     } finally { setSaving(false); }
   };
 
