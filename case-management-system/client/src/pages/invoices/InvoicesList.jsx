@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Box, Typography, Button, CircularProgress, Card, CardContent, List, ListItem, Divider } from '@mui/material';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Box, Typography, Button, CircularProgress, Card, CardContent, List, ListItem, Divider, Chip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import InvoiceIcon from '@mui/icons-material/Receipt';
+import OpenCaseIcon from '@mui/icons-material/Gavel';
 import { DataGrid } from '@mui/x-data-grid';
 import { format } from 'date-fns';
 import api from '../../api/axios';
@@ -14,18 +15,36 @@ export default function InvoicesList() {
   const navigate = useNavigate();
   const { user, hasPermission } = useAuth();
   const isClient = user?.role === 'client';
+  const [searchParams, setSearchParams] = useSearchParams();
+  // Linked from a case's Payments tab: /invoices?case=<caseId>
+  const caseId = searchParams.get('case') || '';
+  const [caseInfo, setCaseInfo] = useState(null);
   const [invoices, setInvoices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 });
   const [rowCount, setRowCount] = useState(0);
 
+  useEffect(() => {
+    let alive = true;
+    if (!caseId) { setCaseInfo(null); return () => { alive = false; }; }
+    (async () => {
+      try {
+        const { data } = await api.get(`/cases/${caseId}`);
+        if (alive) setCaseInfo(data.data || data.case || data);
+      } catch { if (alive) setCaseInfo(null); }
+    })();
+    return () => { alive = false; };
+  }, [caseId]);
+
   const fetchInvoices = useCallback(async () => {
     setLoading(true);
     try {
       const endpoint = isClient ? '/client/invoices' : '/invoices';
       const { data } = await api.get(endpoint, {
-        params: isClient ? {} : { page: paginationModel.page + 1, limit: paginationModel.pageSize, search },
+        params: isClient
+          ? {}
+          : { page: paginationModel.page + 1, limit: paginationModel.pageSize, search, ...(caseId ? { caseId } : {}) },
       });
       const raw = data.data || data.invoices || data || [];
       const rows = (Array.isArray(raw) ? raw : []).map((inv, i) => ({
@@ -33,9 +52,12 @@ export default function InvoicesList() {
         amount: inv.total || inv.amount || 0,
       }));
       let filtered = rows;
+      if (isClient && caseId) {
+        filtered = filtered.filter(r => (r.case?._id || r.caseId) === caseId);
+      }
       if (isClient && search) {
         const q = search.toLowerCase();
-        filtered = rows.filter(r =>
+        filtered = filtered.filter(r =>
           r.invoiceNumber?.toLowerCase().includes(q) ||
           r.status?.toLowerCase().includes(q)
         );
@@ -46,9 +68,25 @@ export default function InvoicesList() {
       setInvoices([]);
       setRowCount(0);
     } finally { setLoading(false); }
-  }, [paginationModel, search, isClient]);
+  }, [paginationModel, search, isClient, caseId]);
 
   useEffect(() => { fetchInvoices(); }, [fetchInvoices]);
+
+  const clearCaseFilter = () => setSearchParams({});
+
+  const caseFilterBar = caseId ? (
+    <Box sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+      <Chip
+        color="primary"
+        variant="outlined"
+        label={caseInfo ? `Invoices for ${caseInfo.caseNumber} — ${caseInfo.caseTitle}` : 'Invoices for selected case'}
+        onDelete={clearCaseFilter}
+      />
+      <Button size="small" onClick={() => navigate(`/cases/${caseId}`)} startIcon={<OpenCaseIcon sx={{ fontSize: 16 }} />}>
+        Open Case
+      </Button>
+    </Box>
+  ) : null;
 
   if (isClient) {
     return (
@@ -59,6 +97,8 @@ export default function InvoicesList() {
             View your billing and payment status
           </Typography>
         </Box>
+
+        {caseFilterBar}
 
         <Box sx={{ mb: 3 }}>
           <SearchBar value={search} onChange={setSearch} placeholder="Search invoices..." sx={{ maxWidth: 400 }} />
@@ -115,7 +155,7 @@ export default function InvoicesList() {
       <Typography variant="body2">{params.row.client?.name || params.value?.name || '-'}</Typography>
     )},
     { field: 'caseNumber', headerName: 'Case', width: 150, renderCell: (params) => (
-      <Typography variant="body2">{params.value || '-'}</Typography>
+      <Typography variant="body2">{params.value || params.row.case?.caseNumber || '-'}</Typography>
     )},
     { field: 'amount', headerName: 'Amount', width: 130, renderCell: (params) => (
       <Typography variant="body2" sx={{ fontWeight: 600 }}>₹{params.value?.toLocaleString()}</Typography>
@@ -141,6 +181,8 @@ export default function InvoicesList() {
           </Button>
         )}
       </Box>
+
+      {caseFilterBar}
 
       <Box sx={{ mb: 3 }}>
         <SearchBar value={search} onChange={setSearch} placeholder="Search invoices..." sx={{ maxWidth: 400 }} />

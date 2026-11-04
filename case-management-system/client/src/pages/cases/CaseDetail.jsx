@@ -16,6 +16,7 @@ import Gavel from '@mui/icons-material/Gavel';
 import CalendarMonth from '@mui/icons-material/CalendarMonth';
 import LocationOn from '@mui/icons-material/LocationOn';
 import PaymentsIcon from '@mui/icons-material/Payments';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 import CourtIcon from '@mui/icons-material/AccountBalance';
 import TimelineIcon from '@mui/icons-material/Timeline';
 import TaskIcon from '@mui/icons-material/Assignment';
@@ -86,6 +87,8 @@ export default function CaseDetail() {
   const [tasks, setTasks] = useState([]);
   const [payments, setPayments] = useState([]);
   const [paymentSummary, setPaymentSummary] = useState(null);
+  const [caseInvoices, setCaseInvoices] = useState([]);
+  const [caseInvoicesLoading, setCaseInvoicesLoading] = useState(false);
   const [taskTypes, setTaskTypes] = useState([]);
   const [taskCategories, setTaskCategories] = useState({});
   const [docCategory, setDocCategory] = useState('other');
@@ -96,7 +99,7 @@ export default function CaseDetail() {
   const [viewerDoc, setViewerDoc] = useState(null);
   const [caseActivities, setCaseActivities] = useState([]);
 
-  useEffect(() => { fetchCase(); fetchCaseUpdates(); fetchTasks(); fetchPaymentSummary(); fetchTaskTypes(); fetchTaskCategories(); fetchCaseActivities(); fetchTeam(); }, [id]);
+  useEffect(() => { fetchCase(); fetchCaseUpdates(); fetchTasks(); fetchPaymentSummary(); fetchCaseInvoices(); fetchTaskTypes(); fetchTaskCategories(); fetchCaseActivities(); fetchTeam(); }, [id]);
 
   const fetchCase = async () => {
     setLoading(true);
@@ -121,6 +124,15 @@ export default function CaseDetail() {
 
   const fetchPaymentSummary = async () => {
     try { const { data } = await api.get(`/payments/summary/${id}`); setPaymentSummary(data.data); setPayments(data.data?.paymentHistory || []); } catch {}
+  };
+
+  // Invoices raised against this case, so the Payments tab links to Billing.
+  const fetchCaseInvoices = async () => {
+    setCaseInvoicesLoading(true);
+    try {
+      const { data } = await api.get('/invoices', { params: { caseId: id, limit: 50 } });
+      setCaseInvoices(data.data || []);
+    } catch { setCaseInvoices([]); } finally { setCaseInvoicesLoading(false); }
   };
 
   const fetchTaskTypes = async () => {
@@ -241,7 +253,7 @@ export default function CaseDetail() {
       toast.success('Payment recorded');
       setPaymentDialog(false);
       setPaymentForm({ amount: '', paymentMethod: 'cash', transactionRef: '', receiptNumber: '', paymentDate: new Date(), notes: '' });
-      fetchPaymentSummary(); fetchCase();
+      fetchPaymentSummary(); fetchCaseInvoices(); fetchCase();
     } catch { toast.error('Failed to record payment'); }
   };
 
@@ -303,6 +315,16 @@ export default function CaseDetail() {
     events.sort((a, b) => new Date(b.date) - new Date(a.date));
     return events;
   };
+
+  // Billed/paid totals across the invoices raised for this case.
+  const getInvoiceTotals = () =>
+    caseInvoices.reduce(
+      (acc, inv) => ({
+        billed: acc.billed + Number(inv.total || 0),
+        paid: acc.paid + Number(inv.paidAmount || 0),
+      }),
+      { billed: 0, paid: 0 }
+    );
 
   const getDocumentCategoryLabel = (cat) => {
     const map = { petition: 'Petition', complaint: 'Complaint', 'written-statement': 'Written Statement', application: 'Application', evidence: 'Evidence', 'court-order': 'Court Order', notice: 'Notice', summons: 'Summons', judgment: 'Judgment', 'id-proof': 'ID Proof', agreement: 'Agreement', 'supporting': 'Supporting Document', other: 'Other' };
@@ -707,7 +729,17 @@ export default function CaseDetail() {
 
         {/* ============ TAB 5: PAYMENTS ============ */}
         <TabPanel value={activeTab} index={5}>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2, flexWrap: 'wrap', gap: 1 }}>
+            <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+              <Button variant="outlined" startIcon={<ReceiptIcon />} onClick={() => navigate(`/invoices?case=${id}`)}>
+                View Invoices
+              </Button>
+              {hasPermission('invoices', 'add') && (
+                <Button variant="outlined" startIcon={<AddIcon />} onClick={() => navigate(`/invoices/new?case=${id}`)}>
+                  Create Invoice
+                </Button>
+              )}
+            </Box>
             <Button variant="contained" startIcon={<AttachMoney />} onClick={() => setPaymentDialog(true)}>Record Payment</Button>
           </Box>
           <Card sx={{ mb: 3 }}>
@@ -721,6 +753,82 @@ export default function CaseDetail() {
               </Grid>
             </CardContent>
           </Card>
+
+          <Card sx={{ mb: 3 }}>
+            <CardContent>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5, flexWrap: 'wrap', gap: 1 }}>
+                <Typography variant="h6" sx={{ fontWeight: 600 }}>Invoices</Typography>
+                <Button size="small" endIcon={<ViewIcon sx={{ fontSize: '16px !important' }} />} onClick={() => navigate(`/invoices?case=${id}`)}>
+                  Open Invoices
+                </Button>
+              </Box>
+
+              {caseInvoices.length > 0 && (
+                <Box sx={{ display: 'flex', gap: 3, mb: 1.5, flexWrap: 'wrap' }}>
+                  <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                    Billed <Box component="span" sx={{ fontWeight: 700, color: 'text.primary' }}>₹{getInvoiceTotals().billed.toLocaleString()}</Box>
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                    Received <Box component="span" sx={{ fontWeight: 700, color: '#4caf50' }}>₹{getInvoiceTotals().paid.toLocaleString()}</Box>
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                    Outstanding <Box component="span" sx={{ fontWeight: 700, color: '#f44336' }}>₹{(getInvoiceTotals().billed - getInvoiceTotals().paid).toLocaleString()}</Box>
+                  </Typography>
+                </Box>
+              )}
+
+              {caseInvoicesLoading ? (
+                <Box sx={{ display: 'flex', justifyContent: 'center', py: 3 }}><CircularProgress size={24} sx={{ color: 'primary.main' }} /></Box>
+              ) : caseInvoices.length === 0 ? (
+                <Box sx={{ py: 2, textAlign: 'center' }}>
+                  <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1.5 }}>
+                    No invoices have been raised for this case yet.
+                  </Typography>
+                  {hasPermission('invoices', 'add') && (
+                    <Button size="small" variant="outlined" startIcon={<AddIcon />} onClick={() => navigate(`/invoices/new?case=${id}`)}>
+                      Create Invoice
+                    </Button>
+                  )}
+                </Box>
+              ) : (
+                <List dense disablePadding>
+                  {caseInvoices.map((inv) => {
+                    const invId = inv._id || inv.id;
+                    return (
+                      <ListItem
+                        key={invId}
+                        divider
+                        onClick={() => navigate(`/invoices/${invId}`)}
+                        sx={{ px: 0, py: 1.25, cursor: 'pointer', borderRadius: 1, transition: 'all 0.15s', '&:hover': { bgcolor: 'action.hover', pl: 0.5 } }}
+                      >
+                        <ListItemText
+                          primary={
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+                              <ReceiptIcon sx={{ fontSize: 16, color: 'primary.main' }} />
+                              <Typography variant="body2" sx={{ fontWeight: 600 }}>{inv.invoiceNumber}</Typography>
+                              <StatusChip status={inv.status} />
+                            </Box>
+                          }
+                          secondary={
+                            inv.dueDate ? `Due ${format(new Date(inv.dueDate), 'dd MMM yyyy')}` : 'No due date'
+                          }
+                        />
+                        <Box sx={{ textAlign: 'right', flexShrink: 0, ml: 2 }}>
+                          <Typography variant="body2" sx={{ fontWeight: 700 }}>₹{Number(inv.total || 0).toLocaleString()}</Typography>
+                          {Number(inv.paidAmount || 0) > 0 && (
+                            <Typography variant="caption" sx={{ color: '#4caf50', display: 'block' }}>
+                              ₹{Number(inv.paidAmount).toLocaleString()} received
+                            </Typography>
+                          )}
+                        </Box>
+                      </ListItem>
+                    );
+                  })}
+                </List>
+              )}
+            </CardContent>
+          </Card>
+
           <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>Payment History</Typography>
           {payments.length === 0 ? (
             <Typography sx={{ textAlign: 'center', py: 4, color: 'text.secondary' }}>No payments recorded yet</Typography>

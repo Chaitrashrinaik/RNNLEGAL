@@ -44,6 +44,7 @@ router.get(
     query('limit').optional().isInt({ min: 1, max: 100 }),
     query('status').optional().isIn(['draft', 'sent', 'paid', 'overdue', 'cancelled']),
     query('client').optional().trim(),
+    query('caseId').optional().trim(),
     query('sortBy').optional().isIn(['invoiceNumber', 'total', 'dueDate', 'createdAt', 'status']),
     query('sortOrder').optional().isIn(['asc', 'desc']),
   ],
@@ -55,13 +56,14 @@ router.get(
       }
 
       const { page, limit, skip } = paginationHelper(req.query.page, req.query.limit);
-      const { status, client: clientId, sortBy = 'createdAt', sortOrder = 'desc' } = req.query;
+      const { status, client: clientId, caseId, sortBy = 'createdAt', sortOrder = 'desc' } = req.query;
 
       let where = 'WHERE 1=1';
       const params = [];
 
       if (status) { where += ' AND i.status = ?'; params.push(status); }
       if (clientId) { where += ' AND i.clientId = ?'; params.push(clientId); }
+      if (caseId) { where += ' AND i.caseId = ?'; params.push(caseId); }
 
       const countResult = await queryOne(`SELECT COUNT(*) as c FROM invoices i ${where}`, params);
       const total = countResult?.c || 0;

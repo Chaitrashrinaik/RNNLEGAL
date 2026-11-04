@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import {
   Box, Typography, Card, CardContent, TextField, Button, MenuItem, IconButton, CircularProgress, Alert, Divider } from '@mui/material';
 import Grid from '../../components/Grid';
@@ -19,6 +19,9 @@ export default function InvoiceForm() {
   const { id } = useParams();
   const navigate = useNavigate();
   const isEdit = Boolean(id);
+  // Arriving from a case's Payments tab: /invoices/new?case=<caseId>
+  const [searchParams] = useSearchParams();
+  const caseParam = isEdit ? '' : (searchParams.get('case') || '');
   const [form, setForm] = useState(emptyForm);
   const [clients, setClients] = useState([]);
   const [cases, setCases] = useState([]);
@@ -44,7 +47,35 @@ export default function InvoiceForm() {
   const fetchCases = async () => {
     try {
       const { data } = await api.get('/cases', { params: { limit: 100 } });
-      setCases(data.data || data.cases || data || []);
+      let list = data.data || data.cases || data || [];
+      if (caseParam) {
+        const match = list.find((c) => (c._id || c.id) === caseParam);
+        if (match) {
+          // Pre-select the case and its client so the invoice is linked on save.
+          setForm((f) => ({
+            ...f,
+            caseId: caseParam,
+            clientId: f.clientId || match.client?._id || match.clientId || '',
+          }));
+        } else {
+          // Case missing from the first page — load it directly so the select still shows it.
+          try {
+            const res = await api.get(`/cases/${caseParam}`);
+            const c = res.data?.data || res.data?.case || res.data;
+            if (c && (c._id || c.id)) {
+              list = [{ ...c, _id: c._id || c.id }, ...list];
+              setCases(list);
+              setForm((f) => ({
+                ...f,
+                caseId: caseParam,
+                clientId: f.clientId || c.client?._id || c.clientId || '',
+              }));
+              return;
+            }
+          } catch { /* fall through to normal list */ }
+        }
+      }
+      setCases(list);
     } catch {
       setCases([]);
     }
@@ -117,7 +148,7 @@ export default function InvoiceForm() {
         await api.post('/invoices', payload);
         toast.success('Invoice created');
       }
-      navigate(isEdit ? `/invoices/${id}` : '/invoices');
+      navigate(isEdit ? `/invoices/${id}` : caseParam ? `/invoices?case=${caseParam}` : '/invoices');
     } catch (err) {
       setError(err.response?.data?.message || err.response?.data?.errors?.[0]?.msg || 'Failed to save invoice');
     } finally { setSaving(false); }
