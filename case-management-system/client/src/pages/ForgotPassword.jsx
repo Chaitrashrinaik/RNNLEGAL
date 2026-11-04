@@ -74,10 +74,10 @@ export default function ForgotPassword() {
   };
 
   return (
-    <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: (theme) => (theme.palette.mode === 'dark' ? 'linear-gradient(135deg, #0a0f18 0%, #111927 50%, #1a2332 100%)' : 'linear-gradient(135deg, #eef2f7 0%, #ffffff 60%, #f7f3ea 100%)'), p: 2 }}>
+    <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: (theme) => (theme.palette.mode === 'dark' ? 'linear-gradient(135deg, #0a0f18 0%, #111927 50%, #1a2332 100%)' : 'linear-gradient(135deg, #eef4fb 0%, #ffffff 60%, #dbe9fb 100%)'), p: 2 }}>
       <Box sx={{ width: '100%', maxWidth: 440 }}>
         <Box sx={{ textAlign: 'center', mb: 4 }}>
-          <Box sx={{ width: 64, height: 64, borderRadius: 2, backgroundColor: 'rgba(201, 169, 110, 0.1)', border: '1px solid rgba(201, 169, 110, 0.2)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
+          <Box sx={{ width: 64, height: 64, borderRadius: 2, backgroundColor: 'rgba(var(--app-accent-rgb), 0.1)', border: '1px solid rgba(var(--app-accent-rgb), 0.2)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
             <ScaleIcon sx={{ color: 'primary.main', fontSize: 36 }} />
           </Box>
           <Typography variant="h4" sx={{ fontWeight: 700, color: 'text.primary', mb: 0.5 }}>CaseBench</Typography>
@@ -102,7 +102,7 @@ export default function ForgotPassword() {
                 <TextField fullWidth label="Email Address" type="email" placeholder="Enter your registered email"
                   value={email} onChange={e => setEmail(e.target.value)} sx={{ mb: 3 }} autoComplete="email" />
                 <Button fullWidth type="submit" variant="contained" size="large" disabled={loading}
-                  sx={{ py: 1.5, backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 600, '&:hover': { backgroundColor: 'primary.dark' }, '&.Mui-disabled': { backgroundColor: 'rgba(201, 169, 110, 0.3)' } }}>
+                  sx={{ py: 1.5, backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 600, '&:hover': { backgroundColor: 'primary.dark' }, '&.Mui-disabled': { backgroundColor: 'rgba(var(--app-accent-rgb), 0.3)' } }}>
                   {loading ? <CircularProgress size={24} sx={{ color: 'primary.contrastText' }} /> : 'Send OTP'}
                 </Button>
               </form>
@@ -126,7 +126,7 @@ export default function ForgotPassword() {
                 <TextField fullWidth label="Confirm Password" type="password" placeholder="Re-enter password"
                   value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} sx={{ mb: 3 }} />
                 <Button fullWidth type="submit" variant="contained" size="large" disabled={loading}
-                  sx={{ py: 1.5, backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 600, '&:hover': { backgroundColor: 'primary.dark' }, '&.Mui-disabled': { backgroundColor: 'rgba(201, 169, 110, 0.3)' } }}>
+                  sx={{ py: 1.5, backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 600, '&:hover': { backgroundColor: 'primary.dark' }, '&.Mui-disabled': { backgroundColor: 'rgba(var(--app-accent-rgb), 0.3)' } }}>
                   {loading ? <CircularProgress size={24} sx={{ color: 'primary.contrastText' }} /> : 'Reset Password'}
                 </Button>
               </form>
@@ -135,9 +135,9 @@ export default function ForgotPassword() {
         </Card>
 
         <Box sx={{ textAlign: 'center', mt: 3 }}>
-          <Typography variant="body2" sx={{ color: '#9aa5b4' }}>
+          <Typography variant="body2" sx={{ color: 'var(--app-text-muted)' }}>
             Remember your password?{' '}
-            <Link to="/login" style={{ color: '#c9a96e', textDecoration: 'none', fontWeight: 500 }}>Sign In</Link>
+            <Link to="/login" style={{ color: 'var(--app-accent)', textDecoration: 'none', fontWeight: 500 }}>Sign In</Link>
           </Typography>
         </Box>
       </Box>

@@ -20,7 +20,7 @@ const typeIcons = {
   hearing: { icon: <Gavel />, color: '#29b6f6', bg: 'rgba(41, 182, 246, 0.1)' },
   invoice: { icon: <Receipt />, color: '#ff9800', bg: 'rgba(255, 152, 0, 0.1)' },
   client: { icon: <PersonAdd />, color: '#4caf50', bg: 'rgba(76, 175, 80, 0.1)' },
-  document: { icon: <Description />, color: '#c9a96e', bg: 'rgba(201, 169, 110, 0.1)' },
+  document: { icon: <Description />, color: 'var(--app-accent)', bg: 'rgba(var(--app-accent-rgb), 0.1)' },
   case: { icon: <CheckCircle />, color: '#9c27b0', bg: 'rgba(156, 39, 176, 0.1)' },
   default: { icon: <NotifIcon />, color: '#9e9e9e', bg: 'rgba(158, 158, 158, 0.1)' },
 };
@@ -98,9 +98,9 @@ export default function Notifications() {
                     sx={{
                       py: 2,
                       px: 3,
-                      backgroundColor: notif.isRead ? 'transparent' : 'rgba(201, 169, 110, 0.03)',
+                      backgroundColor: notif.isRead ? 'transparent' : 'rgba(var(--app-accent-rgb), 0.03)',
                       cursor: 'pointer',
-                      '&:hover': { backgroundColor: 'rgba(201, 169, 110, 0.05)' },
+                      '&:hover': { backgroundColor: 'rgba(var(--app-accent-rgb), 0.05)' },
                     }}
                     onClick={() => !notif.isRead && markRead(notif._id)}
                   >

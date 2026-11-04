@@ -28,7 +28,7 @@ export default function EmptyState({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: 'rgba(201, 169, 110, 0.08)',
+            backgroundColor: 'rgba(var(--app-accent-rgb), 0.08)',
             color: 'primary.main',
             mb: 3,
           }}

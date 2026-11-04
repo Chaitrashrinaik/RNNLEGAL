@@ -382,7 +382,7 @@ export default function Layout() {
                   px: 1.5,
                   py: 0.5,
                   borderRadius: 2,
-                  '&:hover': { backgroundColor: 'rgba(201, 169, 110, 0.08)' },
+                  '&:hover': { backgroundColor: 'rgba(var(--app-accent-rgb), 0.08)' },
                 }}
               >
                 <Avatar

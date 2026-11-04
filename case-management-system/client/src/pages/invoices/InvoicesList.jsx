@@ -75,7 +75,7 @@ export default function InvoicesList() {
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             {invoices.map((inv) => (
               <Card key={inv.id} onClick={() => navigate(`/invoices/${inv.id}`)}
-                sx={{ cursor: 'pointer', '&:hover': { borderColor: 'rgba(201, 169, 110, 0.3)' } }}>
+                sx={{ cursor: 'pointer', '&:hover': { borderColor: 'rgba(var(--app-accent-rgb), 0.3)' } }}>
                 <CardContent>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Box>

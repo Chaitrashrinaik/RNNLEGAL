@@ -123,7 +123,7 @@ export default function ClientDetail() {
                     <ListItem
                       key={c._id}
                       disablePadding
-                      sx={{ py: 1.5, cursor: 'pointer', borderRadius: 1, px: 1, '&:hover': { backgroundColor: 'rgba(201, 169, 110, 0.05)' } }}
+                      sx={{ py: 1.5, cursor: 'pointer', borderRadius: 1, px: 1, '&:hover': { backgroundColor: 'rgba(var(--app-accent-rgb), 0.05)' } }}
                       onClick={() => navigate(`/cases/${c._id}`)}
                     >
                       <ListItemText

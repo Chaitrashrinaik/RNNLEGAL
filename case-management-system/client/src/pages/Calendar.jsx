@@ -158,21 +158,21 @@ export default function Calendar() {
                         p: 0.5,
                         cursor: 'pointer',
                         border: isSelected
-                          ? '2px solid rgba(201, 169, 110, 0.6)'
+                          ? '2px solid rgba(var(--app-accent-rgb), 0.6)'
                           : today
-                            ? '2px solid rgba(201, 169, 110, 0.25)'
+                            ? '2px solid rgba(var(--app-accent-rgb), 0.25)'
                             : '1px solid rgba(37, 51, 73, 0.3)',
                         borderRadius: 1,
                         backgroundColor: isSelected
-                          ? 'rgba(201, 169, 110, 0.1)'
+                          ? 'rgba(var(--app-accent-rgb), 0.1)'
                           : today
-                            ? 'rgba(201, 169, 110, 0.04)'
+                            ? 'rgba(var(--app-accent-rgb), 0.04)'
                             : 'transparent',
                         opacity: isCurrentMonth ? 1 : 0.25,
                         transition: 'all 0.15s',
                         overflow: 'hidden',
                         '&:hover': {
-                          backgroundColor: isCurrentMonth ? 'rgba(201, 169, 110, 0.08)' : 'transparent',
+                          backgroundColor: isCurrentMonth ? 'rgba(var(--app-accent-rgb), 0.08)' : 'transparent',
                         },
                       }}
                     >
@@ -198,8 +198,12 @@ export default function Calendar() {
                             py: 0.15,
                             mb: 0.15,
                             borderRadius: 0.5,
-                            backgroundColor: `${priorityColors[h.priority?.toLowerCase()] || '#c9a96e'}18`,
-                            borderLeft: `2px solid ${priorityColors[h.priority?.toLowerCase()] || '#c9a96e'}`,
+                            // Fallback accent needs to be a real hex colour so the
+                            // "18" alpha suffix below stays valid CSS.
+                            backgroundColor: (theme) =>
+                              `${priorityColors[h.priority?.toLowerCase()] || theme.palette.accent.main}18`,
+                            borderLeft: (theme) =>
+                              `2px solid ${priorityColors[h.priority?.toLowerCase()] || theme.palette.accent.main}`,
                           }}
                         >
                           <Typography
@@ -247,7 +251,7 @@ export default function Calendar() {
                 </Box>
               ) : (
                 (selectedDate ? selectedDayHearings : todayHearings).map((h) => (
-                  <Box key={h._id} sx={{ p: 1.5, mb: 1, borderRadius: 1, border: '1px solid rgba(37, 51, 73, 0.4)', '&:hover': { borderColor: 'rgba(201, 169, 110, 0.3)' } }}>
+                  <Box key={h._id} sx={{ p: 1.5, mb: 1, borderRadius: 1, border: '1px solid rgba(37, 51, 73, 0.4)', '&:hover': { borderColor: 'rgba(var(--app-accent-rgb), 0.3)' } }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 0.5 }}>
                       <Typography variant="body2" sx={{ fontWeight: 600, flex: 1 }}>{h.title}</Typography>
                       <StatusChip status={h.priority} type="priority" />
@@ -282,7 +286,7 @@ export default function Calendar() {
                       borderBottom: '1px solid rgba(37, 51, 73, 0.3)',
                       '&:last-child': { borderBottom: 'none' },
                       cursor: 'pointer',
-                      '&:hover': { backgroundColor: 'rgba(201, 169, 110, 0.04)' },
+                      '&:hover': { backgroundColor: 'rgba(var(--app-accent-rgb), 0.04)' },
                       borderRadius: 0.5,
                       px: 0.5,
                     }}

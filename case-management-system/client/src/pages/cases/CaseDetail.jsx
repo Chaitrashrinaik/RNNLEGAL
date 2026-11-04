@@ -398,7 +398,7 @@ export default function CaseDetail() {
                   {caseData.tags?.length > 0 && (
                     <Box sx={{ mt: 2, display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
                       {caseData.tags.map((tag) => (
-                        <Chip key={tag} label={tag} size="small" variant="outlined" sx={{ borderColor: 'rgba(201, 169, 110, 0.3)', color: 'text.secondary' }} />
+                        <Chip key={tag} label={tag} size="small" variant="outlined" sx={{ borderColor: 'rgba(var(--app-accent-rgb), 0.3)', color: 'text.secondary' }} />
                       ))}
                     </Box>
                   )}
@@ -583,12 +583,12 @@ export default function CaseDetail() {
           {(!caseData.hearings || caseData.hearings.length === 0) ? (
             <Typography sx={{ textAlign: 'center', py: 4, color: 'text.secondary' }}>No hearings recorded yet</Typography>
           ) : (
-            <Box sx={{ pl: 3, borderLeft: '2px solid rgba(201, 169, 110, 0.3)' }}>
+            <Box sx={{ pl: 3, borderLeft: '2px solid rgba(var(--app-accent-rgb), 0.3)' }}>
               {caseData.hearings?.slice().reverse().map((h, reverseIdx) => {
                 const realIdx = caseData.hearings.length - 1 - reverseIdx;
                 return (
                   <Card key={h._id || realIdx} sx={{ mb: 2, position: 'relative' }}>
-                    <Box sx={{ position: 'absolute', left: -29, top: 20, width: 12, height: 12, borderRadius: '50%', backgroundColor: h.outcome ? '#4caf50' : 'primary.main', border: '2px solid #1a2332' }} />
+                    <Box sx={{ position: 'absolute', left: -29, top: 20, width: 12, height: 12, borderRadius: '50%', backgroundColor: h.outcome ? '#4caf50' : 'primary.main', border: '2px solid var(--app-bg)' }} />
                     <CardContent sx={{ py: 2, '&:last-child': { pb: 2 } }}>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                         <Box>
@@ -682,7 +682,7 @@ export default function CaseDetail() {
             <Grid container spacing={2}>
               {caseData.documents?.map((doc) => (
                 <Grid item xs={12} sm={6} md={4}>
-                  <Card sx={{ '&:hover': { borderColor: 'rgba(201, 169, 110, 0.3)' } }}>
+                  <Card sx={{ '&:hover': { borderColor: 'rgba(var(--app-accent-rgb), 0.3)' } }}>
                     <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 2, py: 2 }}>
                       <Avatar sx={{ bgcolor: (doc.mimeType || '').includes('pdf') ? 'error.main' : 'info.main', width: 40, height: 40 }}><DocIcon /></Avatar>
                       <Box sx={{ flex: 1, minWidth: 0 }}>
@@ -793,10 +793,10 @@ export default function CaseDetail() {
           {getTimeline().length === 0 ? (
             <Typography sx={{ textAlign: 'center', py: 4, color: 'text.secondary' }}>No events in timeline</Typography>
           ) : (
-            <Box sx={{ pl: 3, borderLeft: '2px solid rgba(201, 169, 110, 0.3)' }}>
+            <Box sx={{ pl: 3, borderLeft: '2px solid rgba(var(--app-accent-rgb), 0.3)' }}>
               {getTimeline().map((event, i) => (
                 <Box key={i} sx={{ mb: 2, position: 'relative' }}>
-                  <Box sx={{ position: 'absolute', left: -29, top: 4, width: 12, height: 12, borderRadius: '50%', backgroundColor: event.color, border: '2px solid #1a2332' }} />
+                  <Box sx={{ position: 'absolute', left: -29, top: 4, width: 12, height: 12, borderRadius: '50%', backgroundColor: event.color, border: '2px solid var(--app-bg)' }} />
                   <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
                     <Box sx={{ color: event.color, mt: 0.5 }}>{event.icon}</Box>
                     <Box>

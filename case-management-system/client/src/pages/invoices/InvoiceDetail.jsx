@@ -159,11 +159,11 @@ export default function InvoiceDetail() {
           <Box sx={{ mb: 3 }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
-                <tr style={{ borderBottom: '2px solid rgba(201, 169, 110, 0.3)' }}>
-                  <th style={{ padding: '10px 0', textAlign: 'left', color: '#9aa5b4', fontSize: '0.8125rem' }}>Description</th>
-                  <th style={{ padding: '10px 0', textAlign: 'center', color: '#9aa5b4', fontSize: '0.8125rem', width: 80 }}>Qty</th>
-                  <th style={{ padding: '10px 0', textAlign: 'right', color: '#9aa5b4', fontSize: '0.8125rem', width: 120 }}>Rate</th>
-                  <th style={{ padding: '10px 0', textAlign: 'right', color: '#9aa5b4', fontSize: '0.8125rem', width: 120 }}>Amount</th>
+                <tr style={{ borderBottom: '2px solid rgba(var(--app-accent-rgb), 0.3)' }}>
+                  <th style={{ padding: '10px 0', textAlign: 'left', color: 'var(--app-text-muted)', fontSize: '0.8125rem' }}>Description</th>
+                  <th style={{ padding: '10px 0', textAlign: 'center', color: 'var(--app-text-muted)', fontSize: '0.8125rem', width: 80 }}>Qty</th>
+                  <th style={{ padding: '10px 0', textAlign: 'right', color: 'var(--app-text-muted)', fontSize: '0.8125rem', width: 120 }}>Rate</th>
+                  <th style={{ padding: '10px 0', textAlign: 'right', color: 'var(--app-text-muted)', fontSize: '0.8125rem', width: 120 }}>Amount</th>
                 </tr>
               </thead>
               <tbody>

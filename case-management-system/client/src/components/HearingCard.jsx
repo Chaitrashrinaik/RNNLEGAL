@@ -14,13 +14,13 @@ export default function HearingCard({ hearing, onClick }) {
       onClick={onClick}
       sx={{
         cursor: 'pointer',
-        border: isToday ? '1px solid rgba(201, 169, 110, 0.4)' : '1px solid',
-        borderColor: isToday ? 'rgba(201, 169, 110, 0.4)' : 'divider',
-        backgroundColor: isToday ? 'rgba(201, 169, 110, 0.05)' : 'background.paper',
+        border: isToday ? '1px solid rgba(var(--app-accent-rgb), 0.4)' : '1px solid',
+        borderColor: isToday ? 'rgba(var(--app-accent-rgb), 0.4)' : 'divider',
+        backgroundColor: isToday ? 'rgba(var(--app-accent-rgb), 0.05)' : 'background.paper',
         transition: 'all 0.2s ease',
         opacity: isPast ? 0.6 : 1,
         '&:hover': {
-          borderColor: 'rgba(201, 169, 110, 0.3)',
+          borderColor: 'rgba(var(--app-accent-rgb), 0.3)',
           transform: 'translateY(-1px)',
           boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
         },
@@ -36,7 +36,7 @@ export default function HearingCard({ hearing, onClick }) {
               label="Today"
               size="small"
               sx={{
-                backgroundColor: 'rgba(201, 169, 110, 0.2)',
+                backgroundColor: 'rgba(var(--app-accent-rgb), 0.2)',
                 color: 'primary.main',
                 fontWeight: 600,
                 fontSize: '0.65rem',

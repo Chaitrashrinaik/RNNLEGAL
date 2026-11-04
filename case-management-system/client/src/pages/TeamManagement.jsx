@@ -13,6 +13,7 @@ import { Menu } from '@mui/material';
 import { format } from 'date-fns';
 import api from '../api/axios';
 import toast from 'react-hot-toast';
+import { useTheme } from '@mui/material/styles';
 
 const roles = ['Admin', 'Advocate', 'Paralegal', 'Accountant', 'Intern'];
 
@@ -206,7 +207,9 @@ export default function TeamManagement() {
     return format(d, 'dd MMM yyyy');
   };
 
-  const roleColors = { Admin: '#c9a96e', Advocate: '#29b6f6', Paralegal: '#4caf50', Accountant: '#ff9800', Intern: '#9e9e9e' };
+  // Real hex values (not CSS vars) because they get an alpha suffix below.
+  const theme = useTheme();
+  const roleColors = { Admin: theme.palette.accent.main, Advocate: '#29b6f6', Paralegal: '#4caf50', Accountant: '#ff9800', Intern: '#9e9e9e' };
 
   return (
     <Box className="page-container">
@@ -229,7 +232,7 @@ export default function TeamManagement() {
         <Grid container spacing={2}>
           {members.map((member) => (
             <Grid size={{ xs: 12, sm: 6, md: 4, key: member._id }}>
-              <Card sx={{ transition: 'all 0.2s', '&:hover': { borderColor: 'rgba(201, 169, 110, 0.3)' } }}>
+              <Card sx={{ transition: 'all 0.2s', '&:hover': { borderColor: 'rgba(var(--app-accent-rgb), 0.3)' } }}>
                 <CardContent>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                     <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
@@ -362,7 +365,7 @@ export default function TeamManagement() {
           <TableContainer component={Paper} sx={{ border: '1px solid rgba(37, 51, 73, 0.3)' }}>
             <Table size="small">
               <TableHead>
-                <TableRow sx={{ backgroundColor: 'rgba(201, 169, 110, 0.08)' }}>
+                <TableRow sx={{ backgroundColor: 'rgba(var(--app-accent-rgb), 0.08)' }}>
                   <TableCell sx={{ fontWeight: 700, color: 'text.primary' }}>Feature</TableCell>
                   {ACTIONS.map(a => (
                     <TableCell key={a.key} align="center" sx={{ fontWeight: 700, color: 'text.primary' }}>{a.label}</TableCell>
@@ -375,7 +378,7 @@ export default function TeamManagement() {
                   const perms = permForm[f.key] || {};
                   const allOn = perms.view && perms.add && perms.edit && perms.delete;
                   return (
-                    <TableRow key={f.key} sx={{ '&:hover': { backgroundColor: 'rgba(201, 169, 110, 0.04)' } }}>
+                    <TableRow key={f.key} sx={{ '&:hover': { backgroundColor: 'rgba(var(--app-accent-rgb), 0.04)' } }}>
                       <TableCell sx={{ fontWeight: 500 }}>{f.label}</TableCell>
                       {ACTIONS.map(a => (
                         <TableCell key={a.key} align="center">

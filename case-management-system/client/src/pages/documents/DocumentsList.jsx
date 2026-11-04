@@ -232,12 +232,12 @@ export default function DocumentsList() {
         Object.entries(caseGroups).map(([caseId, group]) => {
           const isExpanded = expandedCases[caseId] !== false;
           return (
-            <Card key={caseId} sx={{ mb: 2, background: 'rgba(255,255,255,0.02)' }}>
+            <Card key={caseId} sx={{ mb: 2, background: 'var(--app-paper)' }}>
               <Box
                 sx={{ display: 'flex', alignItems: 'center', gap: 1.5, p: 2, cursor: 'pointer', userSelect: 'none' }}
                 onClick={() => toggleCase(caseId)}
               >
-                <Avatar sx={{ bgcolor: 'rgba(201,169,110,0.15)', color: '#c9a96e', width: 36, height: 36 }}>
+                <Avatar sx={{ bgcolor: 'rgba(var(--app-accent-rgb),0.15)', color: 'var(--app-accent)', width: 36, height: 36 }}>
                   <FolderIcon sx={{ fontSize: 20 }} />
                 </Avatar>
                 <Box sx={{ flex: 1 }}>
@@ -248,7 +248,7 @@ export default function DocumentsList() {
                     {group.docs.length} document{group.docs.length !== 1 ? 's' : ''}
                   </Typography>
                 </Box>
-                <Chip label={group.docs.length} size="small" sx={{ bgcolor: 'rgba(201,169,110,0.1)', color: '#c9a96e' }} />
+                <Chip label={group.docs.length} size="small" sx={{ bgcolor: 'rgba(var(--app-accent-rgb),0.1)', color: 'var(--app-accent)' }} />
                 {isExpanded ? <CollapseIcon sx={{ color: 'text.secondary' }} /> : <ExpandIcon sx={{ color: 'text.secondary' }} />}
               </Box>
 
@@ -261,7 +261,7 @@ export default function DocumentsList() {
                         <Card sx={{
                           transition: 'all 0.2s',
                           border: '1px solid rgba(37, 51, 73, 0.3)',
-                          '&:hover': { borderColor: 'rgba(201, 169, 110, 0.3)', transform: 'translateY(-1px)' },
+                          '&:hover': { borderColor: 'rgba(var(--app-accent-rgb), 0.3)', transform: 'translateY(-1px)' },
                         }}>
                           <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1.5 }}>
@@ -282,7 +282,7 @@ export default function DocumentsList() {
                                 {!isClient && hasPermission('documents', 'edit') && (
                                   <Tooltip title="Rename">
                                     <IconButton size="small" onClick={() => { setContextDoc(doc); setRenameValue(doc.name); setRenameDialog(true); }}>
-                                      <RenameIcon sx={{ fontSize: 16, color: '#c9a96e' }} />
+                                      <RenameIcon sx={{ fontSize: 16, color: 'var(--app-accent)' }} />
                                     </IconButton>
                                   </Tooltip>
                                 )}

@@ -421,7 +421,7 @@ function JuniorTaskView({ team, cases, taskCategories }) {
           {currentTasks.map((t) => {
             const isOverdue = t.dueDate && isPast(parseISO(t.dueDate)) && !['completed', 'cancelled'].includes(t.status);
             return (
-              <Card key={t.id || t._id} sx={{ cursor: 'pointer', '&:hover': { bgcolor: 'rgba(201,169,110,0.05)' }, borderLeft: `4px solid ${PRIORITY_COLORS[t.priority] || '#ccc'}` }}
+              <Card key={t.id || t._id} sx={{ cursor: 'pointer', '&:hover': { bgcolor: 'rgba(var(--app-accent-rgb),0.05)' }, borderLeft: `4px solid ${PRIORITY_COLORS[t.priority] || '#ccc'}` }}
                 onClick={() => { setDetailTask(t); setDetailOpen(true); }}>
                 <CardContent sx={{ py: 1.5, '&:last-child': { pb: 1.5 } }}>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

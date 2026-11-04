@@ -6,6 +6,30 @@ const GOLD = {
   dark: '#b08d4a',
 };
 
+// Light theme accent: light blue on white.
+const BLUE = {
+  main: '#1976d2',
+  light: '#64b5f6',
+  dark: '#1565c0',
+};
+
+// Accent tints per mode. Used wherever a semi-transparent accent colour is
+// needed (hovers, badges, borders) so light mode shows blue and dark mode
+// keeps the gold brand colour.
+const accentTints = (main, alphaStep) =>
+  Object.fromEntries([3, 4, 5, 6, 8, 10, 12, 15, 18, 20, 25, 30, 35, 40, 60].map((n) => [
+    `t${n}`,
+    alphaStep(main, n / 100),
+  ]));
+
+// Minimal colour helper: "rgba(r, g, b, a)" from a hex colour.
+function alpha(hex, a) {
+  const h = hex.replace('#', '');
+  const full = h.length === 3 ? h.split('').map((c) => c + c).join('') : h;
+  const n = parseInt(full, 16);
+  return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${a})`;
+}
+
 const sharedTypography = {
   fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
   h1: { fontSize: '2rem', fontWeight: 600, letterSpacing: '-0.025em' },
@@ -25,33 +49,40 @@ export function createAppTheme(mode = 'dark') {
   const palette = {
     mode,
     primary: isLight
-      ? { main: '#8a6d2f', light: '#a8853f', dark: '#6b5322', contrastText: '#ffffff' }
+      ? { main: BLUE.main, light: BLUE.light, dark: BLUE.dark, contrastText: '#ffffff' }
       : { main: GOLD.main, light: GOLD.light, dark: GOLD.dark, contrastText: '#1a2332' },
     secondary: isLight
-      ? { main: '#5c6b7f', light: '#7b8b9e', dark: '#3f4d5e' }
+      ? { main: '#4c6a85', light: '#6f8aa8', dark: '#38506b', contrastText: '#ffffff' }
       : { main: '#1a2332', light: '#2a3a52', dark: '#0f1520' },
     background: isLight
-      ? { default: '#f4f6f9', paper: '#ffffff' }
+      ? { default: '#eef4fb', paper: '#ffffff' }
       : { default: '#0f1520', paper: '#1a2332' },
     text: isLight
-      ? { primary: '#1a2332', secondary: '#5c6b7f' }
+      ? { primary: '#0d1b2a', secondary: '#4a6076' }
       : { primary: '#e8e8e8', secondary: '#9aa5b4' },
-    divider: isLight ? 'rgba(26, 35, 50, 0.12)' : 'rgba(37, 51, 73, 0.5)',
+    divider: isLight ? 'rgba(13, 27, 42, 0.12)' : 'rgba(37, 51, 73, 0.5)',
     success: { main: '#4caf50', light: '#66bb6a', dark: '#388e3c' },
     warning: { main: '#ff9800', light: '#ffb74d', dark: '#f57c00' },
     error: { main: '#f44336', light: '#e57373', dark: '#d32f2f' },
     info: { main: '#29b6f6', light: '#4fc3f7', dark: '#0288d1' },
     sidebar: isLight
-      ? { bg: '#ffffff', hover: 'rgba(138, 109, 47, 0.08)', active: 'rgba(138, 109, 47, 0.14)', text: '#5c6b7f', activeText: '#8a6d2f' }
+      ? { bg: '#ffffff', hover: alpha(BLUE.main, 0.08), active: alpha(BLUE.main, 0.14), text: '#4a6076', activeText: BLUE.dark }
       : { bg: '#111927', hover: '#1a2742', active: '#1e2d4a', text: '#8b9cb6', activeText: '#c9a96e' },
     card: isLight
-      ? { bg: '#ffffff', border: 'rgba(26, 35, 50, 0.12)' }
+      ? { bg: '#ffffff', border: 'rgba(13, 27, 42, 0.12)' }
       : { bg: '#1a2332', border: '#253349' },
     gold: GOLD,
+    // Accent (the "brand" colour of the current theme) plus its tints, so
+    // components can reference the accent without hard-coding hex values.
+    accent: isLight
+      ? { main: BLUE.main, hover: BLUE.dark, ...accentTints(BLUE.main, alpha) }
+      : { main: GOLD.main, hover: '#b8944f', ...accentTints(GOLD.main, alpha) },
+    // Subtle track/background colour used by progress rings and bars.
+    track: isLight ? 'rgba(13, 27, 42, 0.08)' : 'rgba(255, 255, 255, 0.06)',
   };
 
-  const inputBorder = isLight ? 'rgba(26, 35, 50, 0.23)' : 'rgba(138, 155, 180, 0.2)';
-  const goldHoverBorder = isLight ? 'rgba(138, 109, 47, 0.6)' : 'rgba(201, 169, 110, 0.5)';
+  const inputBorder = isLight ? 'rgba(13, 27, 42, 0.23)' : 'rgba(138, 155, 180, 0.2)';
+  const accentHoverBorder = palette.accent.t60;
 
   return createTheme({
     palette,
@@ -71,13 +102,13 @@ export function createAppTheme(mode = 'dark') {
             '&:hover': { boxShadow: 'none' },
           },
           contained: {
-            '&:hover': { boxShadow: `0 2px 8px ${isLight ? 'rgba(138, 109, 47, 0.3)' : 'rgba(201, 169, 110, 0.3)'}` },
+            '&:hover': { boxShadow: `0 2px 8px ${palette.accent.t30}` },
           },
           outlined: {
-            borderColor: isLight ? 'rgba(138, 109, 47, 0.35)' : 'rgba(201, 169, 110, 0.3)',
+            borderColor: palette.accent.t35,
             '&:hover': {
               borderColor: palette.primary.main,
-              backgroundColor: isLight ? 'rgba(138, 109, 47, 0.08)' : 'rgba(201, 169, 110, 0.08)',
+              backgroundColor: palette.accent.t8,
             },
           },
         },
@@ -102,7 +133,7 @@ export function createAppTheme(mode = 'dark') {
             '& .MuiOutlinedInput-root': {
               borderRadius: 8,
               '& fieldset': { borderColor: inputBorder },
-              '&:hover fieldset': { borderColor: goldHoverBorder },
+              '&:hover fieldset': { borderColor: accentHoverBorder },
               '&.Mui-focused fieldset': { borderColor: palette.primary.main },
             },
           },
@@ -120,7 +151,7 @@ export function createAppTheme(mode = 'dark') {
             fontWeight: 600,
             fontSize: '0.8125rem',
             color: palette.text.secondary,
-            backgroundColor: isLight ? 'rgba(26, 35, 50, 0.04)' : 'rgba(17, 25, 39, 0.5)',
+            backgroundColor: isLight ? 'rgba(13, 27, 42, 0.04)' : 'rgba(17, 25, 39, 0.5)',
           },
         },
       },
@@ -141,14 +172,14 @@ export function createAppTheme(mode = 'dark') {
             borderRadius: 12,
             backgroundColor: palette.background.paper,
             '& .MuiDataGrid-columnHeaders': {
-              backgroundColor: isLight ? 'rgba(26, 35, 50, 0.04)' : 'rgba(17, 25, 39, 0.5)',
+              backgroundColor: isLight ? 'rgba(13, 27, 42, 0.04)' : 'rgba(17, 25, 39, 0.5)',
               borderBottom: `1px solid ${palette.divider}`,
             },
             '& .MuiDataGrid-cell': {
-              borderBottom: `1px solid ${isLight ? 'rgba(26, 35, 50, 0.08)' : 'rgba(37, 51, 73, 0.3)'}`,
+              borderBottom: `1px solid ${isLight ? 'rgba(13, 27, 42, 0.08)' : 'rgba(37, 51, 73, 0.3)'}`,
             },
             '& .MuiDataGrid-row:hover': {
-              backgroundColor: isLight ? 'rgba(138, 109, 47, 0.06)' : 'rgba(201, 169, 110, 0.04)',
+              backgroundColor: isLight ? palette.accent.t6 : 'rgba(201, 169, 110, 0.04)',
             },
           },
         },
@@ -165,7 +196,7 @@ export function createAppTheme(mode = 'dark') {
           root: {
             '& .MuiOutlinedInput-root': {
               '& fieldset': { borderColor: inputBorder },
-              '&:hover fieldset': { borderColor: goldHoverBorder },
+              '&:hover fieldset': { borderColor: accentHoverBorder },
               '&.Mui-focused fieldset': { borderColor: palette.primary.main },
             },
           },

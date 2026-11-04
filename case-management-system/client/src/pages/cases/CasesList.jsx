@@ -188,7 +188,7 @@ export default function CasesList() {
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             {cases.map((c) => (
               <Card key={c.id} onClick={() => navigate(`/cases/${c.id}`)}
-                sx={{ cursor: 'pointer', '&:hover': { borderColor: 'rgba(201, 169, 110, 0.3)' } }}>
+                sx={{ cursor: 'pointer', '&:hover': { borderColor: 'rgba(var(--app-accent-rgb), 0.3)' } }}>
                 <CardContent>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                     <Box sx={{ flex: 1 }}>
@@ -241,7 +241,7 @@ export default function CasesList() {
           InputProps={{ startAdornment: <InputAdornment position="start"><SearchIcon sx={{ color: 'text.secondary', fontSize: 20 }} /></InputAdornment> }}
         />
         <Button variant="outlined" startIcon={<FilterIcon />} onClick={() => setFilterDrawer(true)}
-          sx={{ borderColor: 'rgba(201, 169, 110, 0.3)', color: 'text.secondary' }}>
+          sx={{ borderColor: 'rgba(var(--app-accent-rgb), 0.3)', color: 'text.secondary' }}>
           Filters
           {(filters.status.length > 0 || filters.priority.length > 0 || filters.type.length > 0) && (
             <Chip label={filters.status.length + filters.priority.length + filters.type.length} size="small"

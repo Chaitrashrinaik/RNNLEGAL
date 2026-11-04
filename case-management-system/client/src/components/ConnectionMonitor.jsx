@@ -89,7 +89,7 @@ export default function ConnectionMonitor({ children }) {
             background: 'rgba(10, 15, 24, 0.96)',
           }}
         >
-          <CloudOffIcon sx={{ fontSize: 64, color: '#c9a96e', opacity: 0.9 }} />
+          <CloudOffIcon sx={{ fontSize: 64, color: 'var(--app-accent)', opacity: 0.9 }} />
           <Typography variant="h5" sx={{ fontWeight: 600, color: '#e8e8e8' }}>
             Server is offline. Reconnecting...
           </Typography>
@@ -99,7 +99,7 @@ export default function ConnectionMonitor({ children }) {
               : 'The application is trying to reconnect to the server. Please wait.'}
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mt: 1 }}>
-            <CircularProgress size={20} sx={{ color: '#c9a96e' }} />
+            <CircularProgress size={20} sx={{ color: 'var(--app-accent)' }} />
             <Typography variant="caption" sx={{ color: '#9aa5b4' }}>
               Checking again every few seconds...
             </Typography>
@@ -107,7 +107,7 @@ export default function ConnectionMonitor({ children }) {
           <Button
             variant="outlined"
             size="small"
-            sx={{ mt: 2, borderColor: 'rgba(201, 169, 110, 0.4)', color: '#c9a96e' }}
+            sx={{ mt: 2, borderColor: 'rgba(var(--app-accent-rgb), 0.4)', color: 'var(--app-accent)' }}
             onClick={() => { checkHealth(); }}
           >
             Try now

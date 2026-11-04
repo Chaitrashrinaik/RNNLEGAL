@@ -1,8 +1,13 @@
 import { Card, CardContent, Box, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import TrendingUp from '@mui/icons-material/TrendingUp';
 import TrendingDown from '@mui/icons-material/TrendingDown';
 
-export default function StatsCard({ icon, value, label, trend, trendValue, color = 'primary.main' }) {
+export default function StatsCard({ icon, value, label, trend, trendValue, color }) {
+  // Real hex so the "15" alpha suffix below stays valid CSS; falls back to
+  // the current theme's accent (blue in light, gold in dark).
+  const theme = useTheme();
+  const accent = color || theme.palette.accent.main;
   return (
     <Card
       sx={{
@@ -14,7 +19,7 @@ export default function StatsCard({ icon, value, label, trend, trendValue, color
         borderColor: 'divider',
         transition: 'all 0.2s ease',
         '&:hover': {
-          borderColor: 'rgba(201, 169, 110, 0.3)',
+          borderColor: 'rgba(var(--app-accent-rgb), 0.3)',
           transform: 'translateY(-2px)',
           boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
         },
@@ -59,8 +64,8 @@ export default function StatsCard({ icon, value, label, trend, trendValue, color
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              backgroundColor: `${color}15`,
-              color: color,
+              backgroundColor: `${accent}15`,
+              color: accent,
             }}
           >
             {icon}

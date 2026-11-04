@@ -57,7 +57,7 @@ export default function Register() {
         minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
         background: (theme) => (theme.palette.mode === 'dark'
           ? 'linear-gradient(135deg, #0a0f18 0%, #111927 50%, #1a2332 100%)'
-          : 'linear-gradient(135deg, #eef2f7 0%, #ffffff 60%, #f7f3ea 100%)'), p: 2,
+          : 'linear-gradient(135deg, #eef4fb 0%, #ffffff 60%, #dbe9fb 100%)'), p: 2,
       }}
     >
       <Box sx={{ width: '100%', maxWidth: 520 }}>
@@ -65,8 +65,8 @@ export default function Register() {
           <Box
             sx={{
               width: 64, height: 64, borderRadius: 2,
-              backgroundColor: 'rgba(201, 169, 110, 0.1)',
-              border: '1px solid rgba(201, 169, 110, 0.2)',
+              backgroundColor: 'rgba(var(--app-accent-rgb), 0.1)',
+              border: '1px solid rgba(var(--app-accent-rgb), 0.2)',
               display: 'inline-flex', alignItems: 'center', justifyContent: 'center', mb: 2,
             }}
           >
@@ -142,7 +142,7 @@ export default function Register() {
                 sx={{
                   mt: 3, py: 1.5, backgroundColor: 'primary.main', color: 'primary.contrastText', fontWeight: 600,
                   fontSize: '0.95rem', '&:hover': { backgroundColor: 'primary.dark' },
-                  '&.Mui-disabled': { backgroundColor: 'rgba(201, 169, 110, 0.3)' },
+                  '&.Mui-disabled': { backgroundColor: 'rgba(var(--app-accent-rgb), 0.3)' },
                 }}
               >
                 {loading ? <CircularProgress size={24} sx={{ color: 'primary.contrastText' }} /> : 'Create Account'}
@@ -152,9 +152,9 @@ export default function Register() {
         </Card>
 
         <Box sx={{ textAlign: 'center', mt: 3 }}>
-          <Typography variant="body2" sx={{ color: '#9aa5b4' }}>
+          <Typography variant="body2" sx={{ color: 'var(--app-text-muted)' }}>
             Already have an account?{' '}
-            <Link to="/login" style={{ color: '#c9a96e', textDecoration: 'none', fontWeight: 500 }}>
+            <Link to="/login" style={{ color: 'var(--app-accent)', textDecoration: 'none', fontWeight: 500 }}>
               Sign In
             </Link>
           </Typography>

@@ -8,6 +8,7 @@
 html[data-theme='dark'] {
   --app-bg: #0f1520;
   --app-text: #e8e8e8;
+  --app-text-muted: #9aa5b4;
   --app-paper: #1a2332;
   --app-paper-alt: #1e2d4a;
   --app-border: rgba(37, 51, 73, 0.5);
@@ -18,21 +19,36 @@ html[data-theme='dark'] {
   --app-autofill-bg: #1a2332;
   --app-autofill-text: #e8e8e8;
   --app-tooltip-bg: #253349;
+  --app-accent: #c9a96e;
+  --app-accent-rgb: 201, 169, 110;
+  --app-accent-hover: #d4bc8e;
+  --app-accent-strong: #b8944f;
+  --app-accent-border: rgba(var(--app-accent-rgb), 0.3);
+  --app-accent-track: rgba(var(--app-accent-rgb), 0.5);
+  --app-accent-tint: rgba(var(--app-accent-rgb), 0.08);
 }
 
 html[data-theme='light'] {
-  --app-bg: #f4f6f9;
-  --app-text: #1a2332;
+  --app-bg: #eef4fb;
+  --app-text: #0d1b2a;
+  --app-text-muted: #4a6076;
   --app-paper: #ffffff;
-  --app-paper-alt: #eef2f7;
-  --app-border: rgba(26, 35, 50, 0.12);
-  --app-border-soft: rgba(26, 35, 50, 0.08);
-  --app-scrollbar-track: rgba(26, 35, 50, 0.08);
-  --app-scrollbar-thumb: rgba(26, 35, 50, 0.25);
-  --app-scrollbar-thumb-hover: rgba(26, 35, 50, 0.4);
+  --app-paper-alt: #e8f0f9;
+  --app-border: rgba(13, 27, 42, 0.12);
+  --app-border-soft: rgba(13, 27, 42, 0.08);
+  --app-scrollbar-track: rgba(13, 27, 42, 0.08);
+  --app-scrollbar-thumb: rgba(13, 27, 42, 0.25);
+  --app-scrollbar-thumb-hover: rgba(13, 27, 42, 0.4);
   --app-autofill-bg: #ffffff;
-  --app-autofill-text: #1a2332;
-  --app-tooltip-bg: #3f4d5e;
+  --app-autofill-text: #0d1b2a;
+  --app-tooltip-bg: #38506b;
+  --app-accent: #1976d2;
+  --app-accent-rgb: 25, 118, 210;
+  --app-accent-hover: #64b5f6;
+  --app-accent-strong: #1565c0;
+  --app-accent-border: rgba(25, 118, 210, 0.3);
+  --app-accent-track: rgba(25, 118, 210, 0.5);
+  --app-accent-tint: rgba(25, 118, 210, 0.08);
 }
 
 html, body, #root {
@@ -140,17 +156,17 @@ body {
 }
 
 .stat-card:hover {
-  border-color: rgba(201, 169, 110, 0.3);
+  border-color: var(--app-accent-border);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .gold-accent {
-  color: #c9a96e;
+  color: var(--app-accent);
 }
 
 .gold-border {
-  border-color: rgba(201, 169, 110, 0.3) !important;
+  border-color: var(--app-accent-border) !important;
 }
 
 .skeleton {
@@ -161,12 +177,12 @@ body {
 }
 
 a {
-  color: #c9a96e;
+  color: var(--app-accent);
   text-decoration: none;
 }
 
 a:hover {
-  color: #d4bc8e;
+  color: var(--app-accent-hover);
 }
 
 .MuiDataGrid-root .MuiDataGrid-row {
@@ -174,31 +190,31 @@ a:hover {
 }
 
 .MuiTab-root.Mui-selected {
-  color: #c9a96e;
+  color: var(--app-accent);
 }
 
 .MuiTabs-indicator {
-  background-color: #c9a96e;
+  background-color: var(--app-accent);
 }
 
 .MuiCheckbox-root.Mui-checked {
-  color: #c9a96e;
+  color: var(--app-accent);
 }
 
 .MuiSwitch-root.Mui-checked .MuiSwitch-switchBase.Mui-checked {
-  color: #c9a96e;
+  color: var(--app-accent);
 }
 
 .MuiSwitch-root.Mui-checked .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track {
-  background-color: rgba(201, 169, 110, 0.5);
+  background-color: var(--app-accent-track);
 }
 
 .MuiLinearProgress-root .MuiLinearProgress-bar {
-  background-color: #c9a96e;
+  background-color: var(--app-accent);
 }
 
 .MuiCircularProgress-root {
-  color: #c9a96e;
+  color: var(--app-accent);
 }
 
 input:-webkit-autofill,
