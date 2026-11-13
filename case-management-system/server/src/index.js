@@ -5,11 +5,14 @@ require('dotenv').config();
 
 // Render (and some other PaaS) expose the public URL as RENDER_EXTERNAL_URL.
 // Use it as the default so a fresh deploy works without hand-editing env vars.
+// CLIENT_URL may be a comma-separated list of origins when the app is served
+// from more than one domain (e.g. the onrender.com URL plus a custom domain).
 if (!process.env.CLIENT_URL && process.env.RENDER_EXTERNAL_URL) {
   process.env.CLIENT_URL = process.env.RENDER_EXTERNAL_URL;
 }
-if (!process.env.CLIENT_PORTAL_URL && process.env.CLIENT_URL) {
-  process.env.CLIENT_PORTAL_URL = `${process.env.CLIENT_URL.replace(/\/$/, '')}/client-portal`;
+const primaryClientUrl = (process.env.CLIENT_URL || '').split(',')[0].trim();
+if (!process.env.CLIENT_PORTAL_URL && primaryClientUrl) {
+  process.env.CLIENT_PORTAL_URL = `${primaryClientUrl.replace(/\/$/, '')}/client-portal`;
 }
 
 const logger = require('./utils/logger');
@@ -74,7 +77,19 @@ const startServer = async () => {
 
     const isProd = process.env.NODE_ENV === 'production';
     const allowedOrigins = [];
-    if (process.env.CLIENT_URL) allowedOrigins.push(process.env.CLIENT_URL);
+    // CLIENT_URL (may be comma-separated), RENDER_EXTERNAL_URL and EXTRA_ORIGINS
+    // (custom domains such as https://rnnlegal.in, set in render.yaml) all
+    // count as allowed browser origins for CORS.
+    const addAllowedOrigin = (value) => {
+      if (!value) return;
+      value.split(',').forEach((entry) => {
+        const origin = entry.trim().replace(/\/+$/, '');
+        if (origin && !allowedOrigins.includes(origin)) allowedOrigins.push(origin);
+      });
+    };
+    addAllowedOrigin(process.env.CLIENT_URL);
+    addAllowedOrigin(process.env.RENDER_EXTERNAL_URL);
+    addAllowedOrigin(process.env.EXTRA_ORIGINS);
     if (!isProd) {
       allowedOrigins.push('http://localhost:5173', 'http://localhost:5174', 'http://127.0.0.1:5173', 'http://127.0.0.1:5174');
       // Allow local network access

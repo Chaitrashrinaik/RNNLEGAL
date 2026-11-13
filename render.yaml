@@ -28,6 +28,12 @@ services:
       - key: JWT_EXPIRE
         value: 7d
 
+      # Extra browser origins allowed by CORS, besides RENDER_EXTERNAL_URL.
+      # The custom domain must be listed here or the browser gets a 500 on
+      # every asset/API request made from https://rnnlegal.in.
+      - key: EXTRA_ORIGINS
+        value: "https://rnnlegal.in,https://www.rnnlegal.in"
+
       # Generated once by Render and stored securely.
       - key: JWT_SECRET
         generateValue: true

@@ -78,8 +78,9 @@ Use this if Render keeps demanding payment.
 | `JWT_SECRET` | yes | 32+ random chars (Render generates it) |
 | `JWT_EXPIRE` | yes | `7d` |
 | `RATE_LIMIT_MAX_REQUESTS` | recommended | `3000` |
-| `CLIENT_URL` | auto on Render | public URL of the service |
+| `CLIENT_URL` | auto on Render | public URL of the service (comma-separated if several) |
 | `CLIENT_PORTAL_URL` | auto | `<CLIENT_URL>/client-portal` |
+| `EXTRA_ORIGINS` | yes | comma-separated custom domains allowed by CORS, e.g. `https://rnnlegal.in,https://www.rnnlegal.in` |
 | `CLOUDINARY_*` | optional | blank = uploads saved to local disk |
 | `EMAIL_*` | optional | password-reset emails |
 | `ECOURTS_*` | optional | eCourts lookups |
@@ -96,7 +97,9 @@ Secrets are entered in the host's dashboard. Never commit `server/.env`.
    `CLOUDINARY_API_SECRET`. No code change needed.
 2. **The service sleeps** after 15 minutes idle. The first request afterwards
    is slow, and cron jobs (hearing reminders) pause while it sleeps.
-3. **No custom domain** until you buy one; the `onrender.com` URL works fine.
+3. **Custom domain** is configured: `rnnlegal.in` points at this service. Any
+   new domain must also be added to `EXTRA_ORIGINS` in `render.yaml`, otherwise
+   the browser gets CORS 500s and the page renders blank.
 4. **Free plan = 512 MB RAM.** Fine for this app; heavy document previews may
    be slow.
 
