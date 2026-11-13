@@ -90,6 +90,9 @@ const startServer = async () => {
     addAllowedOrigin(process.env.CLIENT_URL);
     addAllowedOrigin(process.env.RENDER_EXTERNAL_URL);
     addAllowedOrigin(process.env.EXTRA_ORIGINS);
+    // Built-in fallback for this deployment's public origins, so the app works
+    // even before EXTRA_ORIGINS is synced into the environment.
+    addAllowedOrigin('https://rnnlegal.in,https://www.rnnlegal.in,https://casebench.onrender.com');
     if (!isProd) {
       allowedOrigins.push('http://localhost:5173', 'http://localhost:5174', 'http://127.0.0.1:5173', 'http://127.0.0.1:5174');
       // Allow local network access
