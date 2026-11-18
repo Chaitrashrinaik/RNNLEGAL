@@ -106,7 +106,7 @@ export default function InvoiceDetail() {
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
               <Typography variant="caption" sx={{ color: 'text.secondary' }}>FROM</Typography>
-              <Typography variant="body2" sx={{ fontWeight: 600, mt: 0.5 }}>CaseBench Law Firm</Typography>
+              <Typography variant="body2" sx={{ fontWeight: 600, mt: 0.5 }}>RNN Legal</Typography>
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>123 Legal Avenue, Fort</Typography>
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>Mumbai, Maharashtra 400001</Typography>
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>GST: 27AABCU9603R1ZM</Typography>

@@ -370,7 +370,7 @@ export default function Settings() {
           <CardContent>
             <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>Appearance</Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary', mb: 3 }}>
-              Choose how CaseBench looks. Your preference is saved on this device.
+              Choose how RNN Legal looks. Your preference is saved on this device.
             </Typography>
             <ToggleButtonGroup
               exclusive

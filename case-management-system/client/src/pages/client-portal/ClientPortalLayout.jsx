@@ -79,7 +79,7 @@ export default function ClientPortalLayout() {
         position: 'fixed', height: '100vh', zIndex: 100,
       }}>
         <Box sx={{ p: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          {!collapsed && <Typography variant="h6" fontWeight={700} sx={{ color: '#c9a96e' }}>CaseBench</Typography>}
+          {!collapsed && <Typography variant="h6" fontWeight={700} sx={{ color: '#c9a96e' }}>RNN Legal</Typography>}
           <IconButton onClick={() => setCollapsed(!collapsed)} size="small" sx={{ color: 'rgba(255,255,255,0.5)' }}>
             {collapsed ? <Menu /> : <ChevronLeft />}
           </IconButton>

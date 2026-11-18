@@ -76,7 +76,7 @@ export default function ClientPortalForgotPassword() {
       <Card sx={{ width: '100%', maxWidth: 440, bgcolor: '#111827', border: '1px solid rgba(201,169,110,0.15)', borderRadius: 3 }}>
         <CardContent sx={{ p: 4 }}>
           <Box sx={{ textAlign: 'center', mb: 3 }}>
-            <Typography variant="h5" fontWeight={700} sx={{ color: '#c9a96e', mb: 0.5 }}>CaseBench</Typography>
+            <Typography variant="h5" fontWeight={700} sx={{ color: '#c9a96e', mb: 0.5 }}>RNN Legal</Typography>
             <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.5)' }}>Reset Your Password</Typography>
           </Box>
 

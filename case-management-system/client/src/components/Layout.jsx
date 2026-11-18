@@ -171,7 +171,7 @@ export default function Layout() {
                 whiteSpace: 'nowrap',
               }}
             >
-              CaseBench
+              RNN Legal
             </Typography>
             <Typography variant="caption" sx={{ color: 'sidebar.text', whiteSpace: 'nowrap' }}>
               Legal Management
