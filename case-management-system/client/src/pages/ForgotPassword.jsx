@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import {
   Box, Card, CardContent, TextField, Button, Typography, Alert, CircularProgress, Stepper, Step, StepLabel,
 } from '@mui/material';
-import ScaleIcon from '@mui/icons-material/Scale';
 import Email from '@mui/icons-material/Email';
 import Lock from '@mui/icons-material/Lock';
 import Sms from '@mui/icons-material/Sms';
@@ -77,11 +76,8 @@ export default function ForgotPassword() {
     <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: (theme) => (theme.palette.mode === 'dark' ? 'linear-gradient(135deg, #0a0f18 0%, #111927 50%, #1a2332 100%)' : 'linear-gradient(135deg, #eef4fb 0%, #ffffff 60%, #dbe9fb 100%)'), p: 2 }}>
       <Box sx={{ width: '100%', maxWidth: 440 }}>
         <Box sx={{ textAlign: 'center', mb: 4 }}>
-          <Box sx={{ width: 64, height: 64, borderRadius: 2, backgroundColor: 'rgba(var(--app-accent-rgb), 0.1)', border: '1px solid rgba(var(--app-accent-rgb), 0.2)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-            <ScaleIcon sx={{ color: 'primary.main', fontSize: 36 }} />
-          </Box>
-          <Typography variant="h4" sx={{ fontWeight: 700, color: 'text.primary', mb: 0.5 }}>CaseBench</Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>Legal Case Management System</Typography>
+          <Typography variant="h4" sx={{ fontWeight: 700, color: 'text.primary', mb: 0.5 }}>RNN Legal</Typography>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>Legal Case Management System by Advocate Nagendra Naik</Typography>
         </Box>
 
         <Card sx={{ backgroundColor: 'background.paper', border: '1px solid', borderColor: 'divider', borderRadius: 3 }}>

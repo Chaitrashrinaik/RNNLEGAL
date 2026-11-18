@@ -5,7 +5,6 @@ import {
 import Grid from '../components/Grid';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import ScaleIcon from '@mui/icons-material/Scale';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 
@@ -62,21 +61,11 @@ export default function Register() {
     >
       <Box sx={{ width: '100%', maxWidth: 520 }}>
         <Box sx={{ textAlign: 'center', mb: 4 }}>
-          <Box
-            sx={{
-              width: 64, height: 64, borderRadius: 2,
-              backgroundColor: 'rgba(var(--app-accent-rgb), 0.1)',
-              border: '1px solid rgba(var(--app-accent-rgb), 0.2)',
-              display: 'inline-flex', alignItems: 'center', justifyContent: 'center', mb: 2,
-            }}
-          >
-            <ScaleIcon sx={{ color: 'primary.main', fontSize: 36 }} />
-          </Box>
           <Typography variant="h4" sx={{ fontWeight: 700, color: 'text.primary', mb: 0.5 }}>
-            CaseBench
+            RNN Legal
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Register as a Client
+            Legal Case Management System by Advocate Nagendra Naik
           </Typography>
         </Box>
 
